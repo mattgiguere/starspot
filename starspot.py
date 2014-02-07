@@ -20,7 +20,7 @@ class physics:
         # Eddington approximation method, Carroll & Ostlie (ch. 9, p. 266)
         # In: Incidence angle (ray to normal)
         # Out: Attenuation factor (0 to 1)
-        return 0.6 + 0.4 * np.cos(theta)
+        return 0.4 + 0.6 * np.cos(theta)
 
     # Set default limb darkening formula here
     default_limb_darkening = eddington_darkening
@@ -79,7 +79,7 @@ class Simulation:
 
     def mean_radvel(self, t):
         # Computes apparent RV at time t.
-        return None
+        return np.average( self.radvels, weights=self.compute_mask(t) )
 
     def render(self, t):
         # Render this instance at time t.
