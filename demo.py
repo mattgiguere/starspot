@@ -5,7 +5,8 @@ from starspot import *
 
 sun = RigidSphere(6.955e8, 24*86400, np.array([1,1,1])  )
 sim = Simulation(sun, 100)
-rgb = sim.render()
+rgb = sim.render(0)
+
 plt.clf()
 plt.imshow(rgb)
 plt.show()

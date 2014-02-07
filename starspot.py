@@ -9,53 +9,61 @@ import math
 ##### CORE OBJECTS #####
 
 class RigidSphere:
-    """ Target star properties, in SI units.
-    A star is a sphere at (0,0,0). The observer looks in the -z direction.
-    Rotation inclination is given by an angular velocity vector (numpy 3-array)
-    """
+    # Rigid sphere model of a star.
+    # A star is a sphere at (0,0,0). The observer looks in the -z direction.
+    # Rotation inclination is given by an angular velocity vector (numpy 3-array)
+
     def __init__(self, radius, period, axis):
+        # Constructor. Builds angular velocity vector using period and axis.
         self.radius = radius
-        self.angvel = (2*math.pi / period) * axis / np.sqrt( axis.dot(axis) )
+        self.const_angvel = (2*math.pi / period) * axis / np.sqrt( axis.dot(axis) )
 
-    def collide(self, points):
-        # Ray collider.
-        # In: array of query points (x,y), shape (2,N,N)
-        # Out: hit points (x,y,z), with their original indices
-
-        z2 = self.radius**2 - points[0]**2 - points[1]**2
-        hits = (z2 > 0)
-        indices = np.nonzero(hits)
-        z = np.sqrt( z2[hits] )
-
-        out_points = np.vstack([points[0][hits], points[1][hits], z]).transpose()
-        return out_points, indices
-
-    def tangvel(self, points):
-        # Takes (x,y,z) surface points to angular velocities.
-        return np.cross( self.angvel, points )
+    def angvel(self, points):
+        # Takes points to angular velocities. Trivial constant function in this case.
+        return np.tile( self.const_angvel, (points.shape[0], 1) )
 
 class Simulation:
-    """ A simulation instance, keeping precomputed information. """
+    # A simulation instance, keeping precomputed information.
+    # Target is assumed to be a sphere, with property radius.
     def __init__(self, target, resolution):
+        # Constructor. Precomputes ray hits.
         self.target = target
         self.resolution = resolution
 
-        # get query points and collide them
+        # make grid of rays
         R = target.radius
         res = resolution
-        grid_points = np.mgrid[ R:-R:res*1j, -R:R:res*1j ]
-        self.points, self.pixels = target.collide(grid_points)
+        grid = np.mgrid[ R:-R:res*1j, -R:R:res*1j ]
 
-        # get RV
-        self.radvel = -target.tangvel(self.points)[:,2]
+        # collide rays with sphere
+        z2 = target.radius**2 - grid[0]**2 - grid[1]**2
+        hits = (z2 > 0)
+        z = np.sqrt( z2[hits] )
 
-    def render(self):
+        # save positions of hit pixels, and hit locations
+        self.pixels = np.nonzero(hits)
+        self.points = np.vstack([grid[0][hits], grid[1][hits], z]).transpose()
+
+        # get TV = AV x r, RV = -z . TV
+        angvels = target.angvel(self.points)
+        tangvels = np.cross(angvels, self.points)
+        self.radvels = -tangvels[:,2]
+
+    def compute_mask(self, t):
+        # Computes luminosity weights at time t.
+        return None
+
+    def mean_radvel(self, t):
+        # Computes apparent RV at time t.
+        return None
+
+    def render(self, t):
+        # Render this instance at time t.
         rgb = np.zeros((self.resolution, self.resolution, 3))
 
         # scale RVs
-        rv_scale = 1+np.max( np.abs(self.radvel) )
-
-        for y,x,rv in zip(self.pixels[0], self.pixels[1], self.radvel):
+        rv_scale = 1+np.max( np.abs(self.radvels) )
+        for y,x,rv in zip(self.pixels[0], self.pixels[1], self.radvels):
             if rv<0: # blueshift
                 rgb[x,y,2] = 1
                 rgb[x,y,0] = rgb[x,y,1] = 1+rv/rv_scale
@@ -64,3 +72,10 @@ class Simulation:
                 rgb[x,y,1] = rgb[x,y,2] = 1-rv/rv_scale
 
         return rgb 
+
+class physics:
+    # namespace for physical models
+    def compute_limb_darkening(theta):
+        # Computes limb darkening factor.
+        # Eddington approximation method, Carroll & Ostlie (ch. 9, p. 266)
+        return 0.6 + 0.4 * np.cos(theta)
