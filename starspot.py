@@ -40,7 +40,8 @@ class RigidSphere:
         self.radius = radius
         self.axis = np.array(axis)
         self.axis = self.axis / np.linalg.norm(self.axis)
-        self.const_angvel = (2*math.pi / period) * self.axis
+        self.scalar_angvel = 2*math.pi / period
+        self.const_angvel = self.scalar_angvel * self.axis
 
     def angvel(self, points):
         # Takes points to angular velocities. Trivial constant function in this case.
@@ -48,7 +49,9 @@ class RigidSphere:
 
     def evolve(self, points, t):
         # Given points at time 0, return points at time t.
-        mat = rotation_matrix(self.const_angvel * t, self.axis)
+        mat = rotation_matrix(self.scalar_angvel * t, self.axis)
+        print mat
+        print points.shape
         return np.dot( points, mat.transpose() )
 
     def spot(self, theta, phase, size):
@@ -95,7 +98,9 @@ class Simulation:
         # Computes attenuations at all points at time t.
         mask = self.base_mask
         for pos,size in zip(self.spot_centers, self.spot_sizes):
-            pass
+            r = pos - self.target.evolve(self.points, t)
+            norms = np.apply_along_axis(np.linalg.norm, 1, r)
+            mask[norms <= size] *= 0.1
         return mask
 
     def mean_radvel(self, t):
@@ -122,19 +127,32 @@ class Simulation:
 
 ##### UTILITIES #####
 
-def rotation_matrix(angle, direction, point=None):
+def rotation_matrix(angle, direction):
     sina = math.sin(angle)
     cosa = math.cos(angle)
     direction = unit_vector(direction[:3])
-    R = numpy.diag([cosa, cosa, cosa])
-    R += numpy.outer(direction, direction) * (1.0 - cosa)
+    R = np.diag([cosa, cosa, cosa])
+    R += np.outer(direction, direction) * (1.0 - cosa)
     direction *= sina
-    R += numpy.array([[ 0.0,         -direction[2],  direction[1]],
+    R += np.array([[ 0.0,         -direction[2],  direction[1]],
                       [ direction[2], 0.0,          -direction[0]],
                       [-direction[1], direction[0],  0.0]])
-    M = numpy.identity(4)
-    M[:3, :3] = R
-    if point is not None:
-        point = numpy.array(point[:3], dtype=numpy.float64, copy=False)
-        M[:3, 3] = point - numpy.dot(R, point)
-    return M
+    return R
+
+def unit_vector(data, axis=None, out=None):
+    if out is None:
+        data = np.array(data, dtype=np.float64, copy=True)
+        if data.ndim == 1:
+            data /= math.sqrt(np.dot(data, data))
+            return data
+    else:
+        if out is not data:
+            out[:] = np.array(data, copy=False)
+        data = out
+    length = np.atleast_1d(np.sum(data*data, axis))
+    np.sqrt(length, length)
+    if axis is not None:
+        length = np.expand_dims(length, axis)
+    data /= length
+    if out is None:
+        return data
