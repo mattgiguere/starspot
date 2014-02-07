@@ -1,0 +1,20 @@
+Matt's IDL Code Notes
+
+1. Doppler Width: Due to doppler broadening, moving atoms appear to absorb/emit Doppler-shifted photons from our reference frame --> results in emission and absorption line broadening. Effect increases with higher star temperatures
+
+2. Collisional Frequency: Will subtly alter the spectra through the Doppler width (Matt??), appears to be a component of Lorentz broadening 
+
+Lorentz broadening is a combination of natural line broadening and collisional broadening
+
+Note: natural broadening --> arises from the uncertainty in energy of the states involved in the transition (uncertainty priciple)
+
+3. line 105: Rybicki & Lightman p. 291: 
+Calculating the Voigt Function: combines the Lorentz profile PLUS the Doppler effect (all factors that contribute to broadening). Produces Voigt profile that is a line profile of the convolution of the two Gaussian and Lorentzian broadening mechanisms. 
+
+Note: a and u are variables in the Voigt profile that depend on atom velocity, etc. 
+
+4. line 201: Limb Darkening using Carroll & Ostlie Eddington Approximation Method (p.266): 
+Approximation for intensity as a function of angle $\theta$ from the normal
+
+Things to do: find a theoretical study with equations that dictate how stellar spots/plage travel towards the the star's equator over time 
+
