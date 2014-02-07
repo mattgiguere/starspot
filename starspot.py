@@ -47,7 +47,7 @@ class Simulation:
         self.points, self.pixels = target.collide(grid_points)
 
         # get RV
-        self.base_radvel = -target.tangvel(self.points)[:,2]
+        self.radvel = -target.tangvel(self.points)[:,2]
 
     def render(self):
         rgb = np.zeros((self.resolution, self.resolution, 3))
@@ -55,7 +55,7 @@ class Simulation:
         # scale RVs
         rv_scale = 1+np.max( np.abs(self.radvel) )
 
-        for y,x,rv in zip(self.pixels[0], self.pixels[1], self.base_radvel):
+        for y,x,rv in zip(self.pixels[0], self.pixels[1], self.radvel):
             if rv<0: # blueshift
                 rgb[x,y,2] = 1
                 rgb[x,y,0] = rgb[x,y,1] = 1+rv/rv_scale
