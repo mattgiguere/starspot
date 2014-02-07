@@ -50,8 +50,6 @@ class RigidSphere:
     def evolve(self, points, t):
         # Given points at time 0, return points at time t.
         mat = rotation_matrix(self.scalar_angvel * t, self.axis)
-        print mat
-        print points.shape
         return np.dot( points, mat.transpose() )
 
     def spot(self, theta, phase, size):
@@ -130,7 +128,6 @@ class Simulation:
 def rotation_matrix(angle, direction):
     sina = math.sin(angle)
     cosa = math.cos(angle)
-    direction = unit_vector(direction[:3])
     R = np.diag([cosa, cosa, cosa])
     R += np.outer(direction, direction) * (1.0 - cosa)
     direction *= sina
@@ -138,21 +135,3 @@ def rotation_matrix(angle, direction):
                       [ direction[2], 0.0,          -direction[0]],
                       [-direction[1], direction[0],  0.0]])
     return R
-
-def unit_vector(data, axis=None, out=None):
-    if out is None:
-        data = np.array(data, dtype=np.float64, copy=True)
-        if data.ndim == 1:
-            data /= math.sqrt(np.dot(data, data))
-            return data
-    else:
-        if out is not data:
-            out[:] = np.array(data, copy=False)
-        data = out
-    length = np.atleast_1d(np.sum(data*data, axis))
-    np.sqrt(length, length)
-    if axis is not None:
-        length = np.expand_dims(length, axis)
-    data /= length
-    if out is None:
-        return data
