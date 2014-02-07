@@ -5,13 +5,12 @@
 #   - This black box should deal with its own RV, coords, and spots.
 #   - Spots are initialized by (colatitude, phase) at time 0, in degrees.
 #       - But they're converted to rectangular coordinates.
-#   - No class for spots: they're just tuples of ([x y z], size) 
+#   - No class for spots: they're just arrays [x y z size] 
 
 ##### DEPENDENCIES #####
 
 import numpy as np
 import matplotlib.pyplot as plt
-import transformations
 import math
 
 ##### PHYSICAL MODEL #####
@@ -49,12 +48,12 @@ class RigidSphere:
 
     def evolve(self, points, t):
         # Given points at time 0, return points at time t.
-        mat = transformations.rotation_matrix(self.const_angvel * t, self.axis)
+        mat = rotation_matrix(self.const_angvel * t, self.axis)
         return np.dot( points, mat.transpose() )
 
     def spot(self, theta, phase, size):
-        # Given spherical coords, get absolute coords for this star
-        return np.array([0, 0, self.radius])
+        # Given spherical coords, get absolute coords
+        return np.array([0,0,self.radius,size])
 
 class Simulation:
     # A simulation instance, keeping precomputed information.
@@ -63,7 +62,10 @@ class Simulation:
         # Constructor. Precomputes ray hits.
         self.target = target
         self.resolution = resolution
-        self.spots = np.array(spots)
+
+        spots = np.array(spots)
+        self.spot_centers = spots[:,0:3]
+        self.spot_sizes = spots[:,3]
 
         # make grid of rays
         R = target.radius
@@ -90,8 +92,11 @@ class Simulation:
         self.base_mask = physics.default_limb_darkening( thetas )
 
     def compute_mask(self, t):
-        # Computes luminosity weights at time t.
-        return self.base_mask
+        # Computes attenuations at all points at time t.
+        mask = self.base_mask
+        for pos,size in zip(self.spot_centers, self.spot_sizes):
+            pass
+        return mask
 
     def mean_radvel(self, t):
         # Computes apparent RV at time t.
@@ -115,3 +120,21 @@ class Simulation:
 
         return rgb 
 
+##### UTILITIES #####
+
+def rotation_matrix(angle, direction, point=None):
+    sina = math.sin(angle)
+    cosa = math.cos(angle)
+    direction = unit_vector(direction[:3])
+    R = numpy.diag([cosa, cosa, cosa])
+    R += numpy.outer(direction, direction) * (1.0 - cosa)
+    direction *= sina
+    R += numpy.array([[ 0.0,         -direction[2],  direction[1]],
+                      [ direction[2], 0.0,          -direction[0]],
+                      [-direction[1], direction[0],  0.0]])
+    M = numpy.identity(4)
+    M[:3, :3] = R
+    if point is not None:
+        point = numpy.array(point[:3], dtype=numpy.float64, copy=False)
+        M[:3, 3] = point - numpy.dot(R, point)
+    return M
