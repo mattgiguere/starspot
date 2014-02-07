@@ -14,6 +14,7 @@ class RigidSphere:
     Rotation inclination is given by an angular velocity vector (numpy 3-array)
     """
     def __init__(self, radius, period, axis):
+        self.axis /= np.sqrt( axis.dot(axis) )
         self.radius = radius
         self.angvel = (2*math.pi / period) * axis
 
