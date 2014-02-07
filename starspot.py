@@ -3,11 +3,15 @@
 # Notes:
 #   - Simulation takes a black box as its parameter 'target'.
 #   - This black box should deal with its own RV, coords, and spots.
+#   - Spots are initialized by (colatitude, phase) at time 0, in degrees.
+#       - But they're converted to rectangular coordinates.
+#   - No class for spots: they're just tuples of ([x y z], size) 
 
 ##### DEPENDENCIES #####
 
 import numpy as np
 import matplotlib.pyplot as plt
+import transformations
 import math
 
 ##### PHYSICAL MODEL #####
@@ -35,19 +39,31 @@ class RigidSphere:
     def __init__(self, radius, period, axis):
         # Constructor. Builds angular velocity vector using period and axis.
         self.radius = radius
-        self.const_angvel = (2*math.pi / period) * axis / np.linalg.norm(axis)
+        self.axis = np.array(axis)
+        self.axis = self.axis / np.linalg.norm(self.axis)
+        self.const_angvel = (2*math.pi / period) * self.axis
 
     def angvel(self, points):
         # Takes points to angular velocities. Trivial constant function in this case.
         return np.tile( self.const_angvel, (points.shape[0], 1) )
 
+    def evolve(self, points, t):
+        # Given points at time 0, return points at time t.
+        mat = transformations.rotation_matrix(self.const_angvel * t, self.axis)
+        return np.dot( points, mat.transpose() )
+
+    def spot(self, theta, phase, size):
+        # Given spherical coords, get absolute coords for this star
+        return np.array([0, 0, self.radius])
+
 class Simulation:
     # A simulation instance, keeping precomputed information.
     # Target is assumed to be a sphere, with property radius.
-    def __init__(self, target, resolution):
+    def __init__(self, target, resolution, spots):
         # Constructor. Precomputes ray hits.
         self.target = target
         self.resolution = resolution
+        self.spots = np.array(spots)
 
         # make grid of rays
         R = target.radius
