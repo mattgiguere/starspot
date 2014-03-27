@@ -1,4 +1,4 @@
-# demo.py: Demo for starspot library.
+# render.py: render demo for starspot library.
 
 import numpy as np
 from starspot import *
