@@ -9,5 +9,5 @@ sim = Simulation(sun, 200, spots)
 rgb = sim.render(200000)
 
 plt.clf()
-plt.imshow(rgb)
+plt.imshow(rgb, interpolation='nearest')
 plt.show()
