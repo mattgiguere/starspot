@@ -12,9 +12,9 @@ def eddington_limb_darkening(theta):
 
 def voigt(x,amp,pos,fwhm,shape):
     # Computes Voigt spectral profile.
-    tmp = 1/special.wofz(np.zeros((len(x))) \
+    tmp = 1/wofz(np.zeros((len(x))) \
         +1j*np.sqrt(np.log(2.0))*shape).real
     tmp = tmp*amp* \
-        wofz(2*np.sqrt(N.log(2.0))*(x-pos)/fwhm+1j* \
+        wofz(2*np.sqrt(np.log(2.0))*(x-pos)/fwhm+1j* \
         np.sqrt(np.log(2.0))*shape).real
     return tmp

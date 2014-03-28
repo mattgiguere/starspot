@@ -42,6 +42,7 @@ class RigidSphere:
 
     def spot(self, theta, phase, size):
         # Given spherical coords, get absolute coords
+        # TODO(Cyril): finish this
         return np.array([0,0,self.radius,size])
 
 class Simulation:
@@ -82,7 +83,7 @@ class Simulation:
 
     def compute_mask(self, t):
         # Computes attenuations at all points at time t.
-        mask = self.base_mask
+        mask = np.copy( self.base_mask )
         for pos,size in zip(self.spot_centers, self.spot_sizes):
             r = pos - self.target.evolve(self.points, t)
             norms = np.apply_along_axis(np.linalg.norm, 1, r)
