@@ -4,7 +4,7 @@
 #   - Simulation takes a black box as its parameter 'target'.
 #   - This black box should deal with its own RV, coords, and spots.
 #   - Spots are initialized by (colatitude, phase) at time 0, in degrees.
-#       - But they're converted to rectangular coordinates.
+#   - But they're converted to rectangular coordinates.
 #   - No class for spots: they're just arrays [x y z size] 
 
 ##### DEPENDENCIES #####

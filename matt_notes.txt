@@ -16,5 +16,11 @@ Note: a and u are variables in the Voigt profile that depend on atom velocity, e
 4. line 201: Limb Darkening using Carroll & Ostlie Eddington Approximation Method (p.266): 
 Approximation for intensity as a function of angle $\theta$ from the normal
 
+Notes from Meeting:
+
 Things to do: find a theoretical study with equations that dictate how stellar spots/plage travel towards the the star's equator over time 
 
+matt used the impact parameter to graph the RV curve
+"fractional spot size would be good"
+
+"butterfly diagram" spot migrations towards the equator seems to depend on stellar age
