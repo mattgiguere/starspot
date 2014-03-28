@@ -13,20 +13,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-##### PHYSICAL MODEL #####
-
-class physics:
-    # Namespace for various physical model formulas.
-    @staticmethod
-    def eddington_darkening(theta):
-        # Computes limb darkening factor.
-        # Eddington approximation method, Carroll & Ostlie (ch. 9, p. 266)
-        # In: Incidence angle (ray to normal)
-        # Out: Attenuation factor (0 to 1)
-        return 0.4 + 0.6 * np.cos(theta)
-
-    # Set default limb darkening formula here
-    default_limb_darkening = eddington_darkening
+from . import physics
+from . import geometry
 
 ##### CORE OBJECTS #####
 
@@ -49,7 +37,7 @@ class RigidSphere:
 
     def evolve(self, points, t):
         # Given points at time 0, return points at time t.
-        mat = rotation_matrix(self.scalar_angvel * t, self.axis)
+        mat = geometry.rotation_matrix(self.scalar_angvel * t, self.axis)
         return np.dot( points, mat.transpose() )
 
     def spot(self, theta, phase, size):
@@ -90,7 +78,7 @@ class Simulation:
         # get base luminosity mask from limb darkening
         norms = np.apply_along_axis(np.linalg.norm, 1, self.points)
         thetas = np.arccos( self.points[:,2] / norms )
-        self.base_mask = physics.default_limb_darkening( thetas )
+        self.base_mask = physics.eddington_limb_darkening( thetas )
 
     def compute_mask(self, t):
         # Computes attenuations at all points at time t.
@@ -122,16 +110,3 @@ class Simulation:
             rgb[x,y,:] *= atten
 
         return rgb 
-
-##### UTILITIES #####
-
-def rotation_matrix(angle, direction):
-    sina = math.sin(angle)
-    cosa = math.cos(angle)
-    R = np.diag([cosa, cosa, cosa])
-    R += np.outer(direction, direction) * (1.0 - cosa)
-    direction *= sina
-    R += np.array([[ 0.0,         -direction[2],  direction[1]],
-                      [ direction[2], 0.0,          -direction[0]],
-                      [-direction[1], direction[0],  0.0]])
-    return R
