@@ -9,14 +9,11 @@ from . import geometry
 class Raytracer:
     # A raytracer simulation instance, keeping precomputed information.
     # Target is assumed to be a sphere, with property radius.
-    def __init__(self, target, resolution, spots):
+    def __init__(self, target, resolution, spots = []):
         # Constructor. Precomputes ray hits.
         self.target = target
         self.resolution = resolution
-
-        spots = np.array(spots)
-        self.spot_centers = spots[:,0:3]
-        self.spot_sizes = spots[:,3]
+        self.spots = spots
 
         # make grid of rays
         R = target.radius
@@ -45,7 +42,7 @@ class Raytracer:
     def compute_mask(self, t):
         # Computes attenuations at all points at time t.
         mask = np.copy( self.base_mask )
-        for pos,size in zip(self.spot_centers, self.spot_sizes):
+        for pos,size in self.spots:
             r = pos - self.target.evolve(self.points, t)
             norms = np.apply_along_axis(np.linalg.norm, 1, r)
             mask[norms <= size] *= 0.1
