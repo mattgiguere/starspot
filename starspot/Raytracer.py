@@ -2,6 +2,7 @@
 
 import numpy as np
 import math
+from itertools import izip
 
 from . import physics
 from . import geometry
@@ -59,7 +60,7 @@ class Raytracer:
 
         # scale RVs
         rv_scale = 1+np.max( np.abs(self.radvels) )
-        for y,x,rv,atten in zip(self.pixels[0], self.pixels[1], self.radvels, mask):
+        for y,x,rv,atten in izip(self.pixels[0], self.pixels[1], self.radvels, mask):
             if rv<0: # blueshift
                 rgb[x,y,2] = 1
                 rgb[x,y,0] = rgb[x,y,1] = 1+rv/rv_scale
