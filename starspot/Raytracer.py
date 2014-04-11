@@ -39,7 +39,7 @@ class Raytracer:
         thetas = np.arccos( self.points[:,2] / norms )
         self.base_mask = physics.default_limb_darkening( thetas )
 
-    def compute_mask(self, t):
+    def trace(self, t):
         # Computes attenuations at all points at time t.
         mask = np.copy( self.base_mask )
         for pos,size in self.spots:
@@ -48,14 +48,13 @@ class Raytracer:
             mask[norms <= size] *= 0.1
         return mask
 
-    def mean_radvel(self, t):
+    def mean_radvel(self, mask):
         # Computes apparent RV at time t.
-        return np.average( self.radvels, weights=self.compute_mask(t) )
+        return np.average( self.radvels, weights=mask )
 
-    def render(self, t):
+    def render(self, mask):
         # Render this instance at time t.
         rgb = np.zeros((self.resolution, self.resolution, 3))
-        mask = self.compute_mask(t)
 
         # scale RVs
         rv_scale = 1+np.max( np.abs(self.radvels) )

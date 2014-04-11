@@ -9,7 +9,8 @@ rt = Raytracer(sun, 50, spots)
 
 # simulate RV measurement with Voigt spectra at a time
 def slow_rv(t):
-    rgb = rt.render(t)
+    mask = rt.trace(t)
+    rgb = rt.render(mask)
 
     plt.subplot(3,1,1)
     plt.cla()
@@ -21,7 +22,6 @@ def slow_rv(t):
     plt.plot(x, base, label='base', color='gray')
 
     ret = np.zeros( base.shape )
-    mask = rt.compute_mask(t)
     for rv, m in zip(rt.radvels, mask):
         ret += m * physics.voigt(x + rv/10000.0, 1, 0.5, 0.1, 0)
     ret /= mask.sum()
@@ -35,8 +35,9 @@ def slow_rv(t):
 
 # simulate RV measurement with weighted average
 def fast_rv(t):
-    rgb = rt.render(t)
-    return rt.mean_radvel(t)
+    mask = rt.trace(t)
+    rgb = rt.render(mask)
+    return rt.mean_radvel(mask)
 
 plt.clf()
 
