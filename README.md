@@ -8,5 +8,7 @@ Notes
 
 To reload libraries when testing, enter this in IPython:
 
-```%load_ext autoreload
-%autoreload 2```
+```
+%load_ext autoreload
+%autoreload 2
+```
