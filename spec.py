@@ -21,10 +21,10 @@ def render(t):
     plt.plot(x, base, label='base', color='gray')
 
     ret = np.zeros( base.shape )
-    attens = rt.trace(t)
-    for rv, m in zip(rt.radvels, attens):
+    mask = rt.compute_mask(t)
+    for rv, m in zip(rt.radvels, mask):
         ret += m * physics.voigt(x + rv/10000.0, 1, 0.5, 0.1, 0)
-    ret /= attens.sum()
+    ret /= mask.sum()
     plt.plot(x, ret, label='spread', color='red')
 
     plt.axvline(0.5, color='gray')
