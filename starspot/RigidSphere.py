@@ -23,6 +23,11 @@ class RigidSphere:
         # Takes points to angular velocities. Trivial constant function in this case.
         return np.tile( self.const_angvel, (points.shape[0], 1) )
 
+    def max_radvel(self):
+        # Magnitude of RV at star's edge (accounting for inclination).
+        sini = math.sqrt( 1 - self.axis[2]**2 )
+        return self.scalar_angvel * self.radius * sini
+
     def evolve(self, points, t):
         # Given points at time 0, return points at time t.
         mat = geometry.rotation_matrix(self.scalar_angvel * t, self.axis)
@@ -30,5 +35,19 @@ class RigidSphere:
 
     def spot(self, theta, phase, size):
         # Given spherical coords, get absolute coords
-        # TODO(Cyril): finish this
-        return np.array([0,0,self.radius,size])
+        # Convention: theta is a latitude in degrees: 0 = equator, +90 = north pole
+        # Phase is in periods: 0 = transit, 0.5 = opposition, 1 = next transit
+
+        # find axis with z projection removed
+        w = self.axis[0:2] / np.sqrt(self.axis[0]**2 + self.axis[1]**2)
+        
+        # get location at phase 0 (latitude only)
+        theta *= -math.pi/180.0
+        c, s = math.cos(theta), math.sin(theta)
+        p = self.radius * np.array( [s*w[0], s*w[1], c] )
+
+        # rotate to phase
+        mat = geometry.rotation_matrix(-2.0 * math.pi * phase, self.axis)
+        p = np.dot(p, mat.transpose())
+
+        return np.append(p, [size])
