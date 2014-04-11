@@ -1,7 +1,6 @@
 # Raytracer.py: slow raytracing simulator
 
 import numpy as np
-import matplotlib.pyplot as plt
 import math
 
 from . import physics

@@ -1,7 +1,6 @@
 # RigidSphere.py: non-fluid spherical model of a star
 
 import numpy as np
-import matplotlib.pyplot as plt
 import math
 
 from . import geometry
