@@ -13,3 +13,4 @@ import math
 
 from RigidSphere import *
 from Raytracer import *
+from FastOccluder import *

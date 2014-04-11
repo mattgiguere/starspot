@@ -34,32 +34,32 @@ class Raytracer:
         tangvels = np.cross(angvels, self.points)
         self.radvels = -tangvels[:,2]
 
-        # get base luminosity mask from limb darkening
+        # get base luminosity attens from limb darkening
         norms = np.apply_along_axis(np.linalg.norm, 1, self.points)
         thetas = np.arccos( self.points[:,2] / norms )
-        self.base_mask = physics.default_limb_darkening( thetas )
+        self.base_attens = physics.default_limb_darkening( thetas )
 
-    def compute_mask(self, t):
+    def trace(self, t):
         # Computes attenuations at all points at time t.
-        mask = np.copy( self.base_mask )
+        attens = np.copy( self.base_attens )
         for pos,size in self.spots:
             r = pos - self.target.evolve(self.points, t)
             norms = np.apply_along_axis(np.linalg.norm, 1, r)
-            mask[norms <= size] *= 0.1
-        return mask
+            attens[norms <= size] *= 0.1
+        return attens
 
     def mean_radvel(self, t):
         # Computes apparent RV at time t.
-        return np.average( self.radvels, weights=self.compute_mask(t) )
+        return np.average( self.radvels, weights=self.trace(t) )
 
     def render(self, t):
         # Render this instance at time t.
         rgb = np.zeros((self.resolution, self.resolution, 3))
-        mask = self.compute_mask(t)
+        attens = self.trace(t)
 
         # scale RVs
         rv_scale = 1+np.max( np.abs(self.radvels) )
-        for y,x,rv,atten in zip(self.pixels[0], self.pixels[1], self.radvels, mask):
+        for y,x,rv,atten in zip(self.pixels[0], self.pixels[1], self.radvels, attens):
             if rv<0: # blueshift
                 rgb[x,y,2] = 1
                 rgb[x,y,0] = rgb[x,y,1] = 1+rv/rv_scale
