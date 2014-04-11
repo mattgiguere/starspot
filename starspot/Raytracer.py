@@ -4,8 +4,7 @@ import numpy as np
 import math
 from itertools import izip
 
-from . import physics
-from . import geometry
+import physics
 
 class Raytracer:
     # A raytracer simulation instance, keeping precomputed information.

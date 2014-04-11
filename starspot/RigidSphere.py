@@ -3,7 +3,7 @@
 import numpy as np
 import math
 
-from . import geometry
+import geometry
 
 class RigidSphere:
     # Rigid sphere model of a star.
