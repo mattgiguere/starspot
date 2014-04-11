@@ -14,14 +14,14 @@ def render_grid():
         for j,l in enumerate(lat):
             print "rendering time series (%d,%d)" % (i+1,j+1)
             if plax:
-                plt.subplot2grid( (len(ax), len(lat)), (i, j), sharex=plax )
+                plt.subplot2grid( (len(ax), len(lat)), (i, j), sharey=plax )
             else:
                 plax = plt.subplot2grid( (len(ax), len(lat)), (i, j) )
 
             period = 20*86400
             sun = RigidSphere(6.955e8, period, a)
             spots = [sun.spot(l,0,10e7)]
-            rt = Raytracer(sun, 70, spots)
+            rt = Raytracer(sun, 40, spots)
 
             T = np.linspace(0, 2*period, samples)
             rv = np.zeros(samples)

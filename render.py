@@ -12,7 +12,7 @@ plt.clf()
 
 for i in range(5):
     plt.subplot(1,5,i+1)
-    rgb = rt.render(i*200000)
+    rgb = rt.render(rt.trace(i*200000))
     plt.axis('off')
     plt.imshow(rgb, interpolation='nearest', origin='lower')
 
