@@ -5,11 +5,11 @@ from starspot import *
 
 sun = RigidSphere(6.955e8, 20*86400, [0,1,0])
 spots = [sun.spot(0,1,20e7)]
-sim = Simulation(sun, 50, spots)
+rt = Raytracer(sun, 50, spots)
 
 # render at a time
-def rt(t):
-    rgb = sim.render(t)
+def render(t):
+    rgb = rt.render(t)
 
     plt.subplot(3,1,1)
     plt.cla()
@@ -21,8 +21,8 @@ def rt(t):
     plt.plot(x, base, label='base', color='gray')
 
     ret = np.zeros( base.shape )
-    mask = sim.compute_mask(t)
-    for rv, m in zip(sim.radvels, mask):
+    mask = rt.compute_mask(t)
+    for rv, m in zip(rt.radvels, mask):
         ret += m * physics.voigt(x + rv/10000.0, 1, 0.5, 0.1, 0)
     ret /= mask.sum()
     plt.plot(x, ret, label='spread', color='red')
@@ -35,13 +35,13 @@ def rt(t):
     return np.average(x, weights=ret)
 
 plt.clf()
-rt(0)
+render(0)
 
-T = np.linspace(0,2000000,100)
+T = np.linspace(0,200000,10)
 rv = []
 for t in T:
     print t
-    rv.append(rt(t))
+    rv.append(render(t))
 
 RV = np.array(rv)
 

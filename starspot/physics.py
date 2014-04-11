@@ -18,3 +18,5 @@ def voigt(x,amp,pos,fwhm,shape):
         wofz(2*np.sqrt(np.log(2.0))*(x-pos)/fwhm+1j* \
         np.sqrt(np.log(2.0))*shape).real
     return tmp
+
+default_limb_darkening = eddington_limb_darkening
