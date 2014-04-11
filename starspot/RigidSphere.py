@@ -30,7 +30,7 @@ class RigidSphere:
 
     def evolve(self, points, t):
         # Given points at time 0, return points at time t.
-        mat = geometry.rotation_matrix(self.scalar_angvel * t, self.axis)
+        mat = geometry.rotation_matrix(-self.scalar_angvel * t, self.axis)
         return np.dot( points, mat.transpose() )
 
     def spot(self, theta, phase, size):
@@ -41,8 +41,11 @@ class RigidSphere:
         # find axis with z projection removed
         w = self.axis[0:2] / np.sqrt(self.axis[0]**2 + self.axis[1]**2)
         
+        # apply inclination
+        theta *= math.pi/180.0
+        theta -= math.asin(self.axis[2])
+
         # get location at phase 0 (latitude only)
-        theta *= -math.pi/180.0
         c, s = math.cos(theta), math.sin(theta)
         p = self.radius * np.array( [s*w[0], s*w[1], c] )
 

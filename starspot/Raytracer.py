@@ -22,7 +22,7 @@ class Raytracer:
         # make grid of rays
         R = target.radius
         res = resolution
-        grid = np.mgrid[ R:-R:res*1j, -R:R:res*1j ]
+        grid = np.mgrid[ -R:R:res*1j, -R:R:res*1j ]
 
         # collide rays with sphere
         z2 = target.radius**2 - grid[0]**2 - grid[1]**2
@@ -72,4 +72,4 @@ class Raytracer:
                 rgb[x,y,1] = rgb[x,y,2] = 1-rv/rv_scale
             rgb[x,y,:] *= atten
 
-        return rgb 
+        return rgb

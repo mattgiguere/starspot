@@ -3,12 +3,17 @@
 import numpy as np
 from starspot import *
 
-sun = RigidSphere(6.955e8, 24*86400, [0,1,0])
-spots = [sun.spot(45,0.2,4e7)]
-rt = Raytracer(sun, 200, spots)
-rgb = rt.render(0)
+period = 24.*86400.
+sun = RigidSphere(6.955e8, period, [1,1,1])
+spots = [sun.spot(0,0,10e7)]
+rt = Raytracer(sun, 100, spots)
 
 plt.clf()
-plt.cla()
-plt.imshow(rgb, interpolation='nearest')
+
+for i in range(5):
+    plt.subplot(1,5,i+1)
+    rgb = rt.render(i*200000)
+    plt.axis('off')
+    plt.imshow(rgb, interpolation='nearest', origin='lower')
+
 plt.show()
