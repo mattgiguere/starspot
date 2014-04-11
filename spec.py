@@ -2,10 +2,12 @@
 
 import numpy as np
 from starspot import *
+from starspot.geometry import inclined_axis
 
-sun = RigidSphere(6.955e8, 20*86400, [0,1,2])
-spots = [sun.spot(60,0,20e7)]
-rt = Raytracer(sun, 70, spots)
+period = 20*86400
+sun = RigidSphere(6.955e8, period, [0,1,2])
+spots = [sun.spot(45,0,10e7)]
+rt = Raytracer(sun, 50, spots)
 
 # simulate RV measurement with Voigt spectra at a time
 def slow_rv(t):
@@ -27,15 +29,28 @@ def fast_rv(t):
     mask = rt.trace(t)
     return rt.mean_radvel(mask)
 
-plt.clf()
+# demo: render evolution and curve
+def render_one():
+    renders = 5
+    samples = 60
+    T = np.linspace(0,2*period,samples)
+    rv = np.zeros(samples)
 
-T = np.linspace(0,4000000,100)
-rv = []
-for t in T:
-    print t
-    rv.append(fast_rv(t))
+    for i,t in enumerate(T):
+        print "trace %d/%d (t=%f)" % (i+1, len(T), t)
+        rv[i] = fast_rv(t)
 
-RV = np.array(rv)
 
-plt.plot(T,RV)
-plt.show()
+    plt.clf()
+    plt.subplot2grid((2,renders),(0,0), colspan=5)
+    plt.plot(T,rv)
+
+    for i in range(renders):
+        plt.subplot2grid((2,renders),(1,i))
+        print "render %d/%d (t=%f)" % (i+1, renders, t)
+        t = 0.2*period*i/renders
+        rgb = rt.render( rt.trace(t) )
+        plt.axis('off')
+        plt.imshow(rgb, interpolation='nearest', origin='lower')
+
+    plt.show()
