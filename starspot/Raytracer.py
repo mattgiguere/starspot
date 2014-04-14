@@ -47,9 +47,13 @@ class Raytracer:
             mask[ self.target.occlude(pos_t, theta, self.points) ] *= 0.1
         return mask
 
-    def mean_radvel(self, mask):
-        # Computes apparent RV at time t.
+    def mean_rv(self, mask):
+        # Computes apparent RV at with attenuation mask.
         return np.average( self.radvels, weights=mask )
+
+    def rv(self, t):
+        # Computes apparent RV at time t.
+        return self.mean_rv( self.trace(t) )
 
     def render(self, mask):
         # Render this instance at time t.
@@ -64,6 +68,6 @@ class Raytracer:
             else: # redshift
                 rgb[x,y,0] = 1
                 rgb[x,y,1] = rgb[x,y,2] = 1-rv/rv_scale
-            rgb[x,y,:] *= atten
+            rgb[x,y,:] *= atten * 1.2 * math.pi
 
         return rgb

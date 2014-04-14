@@ -24,11 +24,6 @@ def slow_rv(t):
 
     return np.average(x, weights=ret)
 
-# simulate RV measurement with weighted average
-def fast_rv(t):
-    mask = rt.trace(t)
-    return rt.mean_radvel(mask)
-
 # demo: render evolution and curve
 def render_one():
     renders = 5
@@ -38,8 +33,7 @@ def render_one():
 
     for i,t in enumerate(T):
         print "trace %d/%d (t=%f)" % (i+1, len(T), t)
-        rv[i] = fast_rv(t)
-
+        rv[i] = rt.rv(t)
 
     plt.clf()
     plt.subplot2grid((2,renders),(0,0), colspan=5)

@@ -27,7 +27,7 @@ def render_grid():
             rv = np.zeros(samples)
             for k,t in enumerate(T):
                 print "trace %d/%d (t=%f)" % (k+1, len(T), t)
-                rv[k] = rt.mean_radvel( rt.trace(t) )
+                rv[k] = rt.rv(t)
 
             plt.plot(T, rv)
 

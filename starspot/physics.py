@@ -1,6 +1,7 @@
 # physics.py: physical formulas
 
 import numpy as np
+import math
 from scipy.special import wofz
 
 def eddington_limb_darkening(theta):
@@ -8,7 +9,9 @@ def eddington_limb_darkening(theta):
     # Eddington approximation method, Carroll & Ostlie (ch. 9, p. 266)
     # In: Incidence angle (ray to normal)
     # Out: Attenuation factor (0 to 1)
-    return 0.4 + 0.6 * np.cos(theta)
+
+    # normalized so that integral is 1 on unit circle
+    return ( 0.4 + 0.6*np.cos(theta) ) / ( 1.2*math.pi )
 
 def voigt(x,amp,pos,fwhm,shape):
     # Computes Voigt spectral profile.
