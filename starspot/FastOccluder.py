@@ -10,22 +10,26 @@ import physics
 class FastOccluder:
     # A fast simulator using equal-RV planes, parallel to rotation axis
     # Doesn't work when spots overlap!
-    def __init__(self, target, resolution, spots=[]):
+    def __init__(self, target, spots=[]):
         # Constructor. Precomputes plane RVs.
         self.target = target
-        self.resolution = resolution
         self.spots = spots
+        self.max_rv = target.max_radvel()
 
-        # get plane RVs and grid lines
-        max_rv = target.max_radvel()
-        R = target.radius
-        self.radvels = np.linspace(-max_rv, max_rv, resolution)
-        self.x = np.linspace(-R, R, resolution)
-        self.ymax = np.sqrt( R**2 - self.x**2 )
-
-    def trace(self, t):
-        # Computes distribution of RVs at time t.
-        rv = 0
+    def rv(self, t):
+        # Computes approximate mean RV time t.
+        rv_all = 0
         for pos,theta in self.spots:
-            rv -= / R**2
-        return rv
+            pos_t = self.target.evolve(pos, -t) / self.target.radius
+            if pos_t[2] < 0:
+                # behind star
+                continue
+
+            area = math.pi * math.sin(theta)**2
+            area *= math.sqrt(1 - pos_t[0]**2 - pos_t[1]**2 ) # perspective
+
+            R = self.target.radius
+            rv = self.max_rv * pos_t[0]
+            ld = physics.default_limb_darkening(math.acos( pos_t[2] ))
+            rv_all -= area * rv * ld
+        return rv_all
