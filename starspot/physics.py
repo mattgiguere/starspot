@@ -11,7 +11,7 @@ def eddington_limb_darkening(theta):
     # Out: Attenuation factor (0 to 1)
 
     # normalized so that integral is 1 on unit circle
-    return ( 0.4 + 0.6*np.cos(theta) ) / ( 1.2*math.pi )
+    return ( 0.4 + 0.6*np.cos(theta) ) / ( 0.8*math.pi )
 
 def voigt(x,amp,pos,fwhm,shape):
     # Computes Voigt spectral profile.

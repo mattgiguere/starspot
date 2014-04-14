@@ -6,7 +6,7 @@ from starspot import *
 period = 24.*86400.
 sun = RigidSphere(6.955e8, period, [0,1,0])
 spots = [sun.spot(0,0,0.005)]
-rt = Raytracer(sun, 100, spots)
+rt = Raytracer(sun, spots, 100)
 
 plt.clf()
 

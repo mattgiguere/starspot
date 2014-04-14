@@ -9,7 +9,7 @@ import physics
 class Raytracer:
     # A raytracer simulation instance, keeping precomputed information.
     # Target is assumed to be a sphere, with property radius.
-    def __init__(self, target, resolution, spots = []):
+    def __init__(self, target, spots = [], resolution = 50):
         # Constructor. Precomputes ray hits.
         self.target = target
         self.resolution = resolution
@@ -44,7 +44,7 @@ class Raytracer:
         mask = np.copy( self.base_mask )
         for pos,theta in self.spots:
             pos_t = self.target.evolve(pos, -t)
-            mask[ self.target.occlude(pos_t, theta, self.points) ] *= 0.1
+            mask[ self.target.occlude(pos_t, theta, self.points) ] = 0
         return mask
 
     def mean_rv(self, mask):
@@ -68,6 +68,6 @@ class Raytracer:
             else: # redshift
                 rgb[x,y,0] = 1
                 rgb[x,y,1] = rgb[x,y,2] = 1-rv/rv_scale
-            rgb[x,y,:] *= atten * 1.2 * math.pi
+            rgb[x,y,:] *= atten * 0.8 * math.pi
 
         return rgb

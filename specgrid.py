@@ -21,13 +21,10 @@ def render_grid():
             period = 20*86400
             sun = RigidSphere(6.955e8, period, a)
             spots = [sun.spot(l,0,0.01)]
-            rt = Raytracer(sun, 40, spots)
+            rt = Raytracer(sun, spots, 40)
 
             T = np.linspace(0, 2*period, samples)
-            rv = np.zeros(samples)
-            for k,t in enumerate(T):
-                print "trace %d/%d (t=%f)" % (k+1, len(T), t)
-                rv[k] = rt.rv(t)
+            rv = get_rvs(rt, T)
 
             plt.plot(T, rv)
 
