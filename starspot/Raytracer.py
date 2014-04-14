@@ -42,10 +42,9 @@ class Raytracer:
     def trace(self, t):
         # Computes attenuations at all points at time t.
         mask = np.copy( self.base_mask )
-        for pos,size in self.spots:
-            r = pos - self.target.evolve(self.points, t)
-            norms = np.apply_along_axis(np.linalg.norm, 1, r)
-            mask[norms <= size] *= 0.1
+        for pos,theta in self.spots:
+            pos_t = self.target.evolve(pos, -t)
+            mask[ self.target.occlude(pos_t, theta, self.points) ] *= 0.1
         return mask
 
     def mean_radvel(self, mask):

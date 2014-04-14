@@ -6,7 +6,7 @@ from starspot.geometry import inclined_axis
 
 period = 20*86400
 sun = RigidSphere(6.955e8, period, [0,1,2])
-spots = [sun.spot(45,0,10e7)]
+spots = [sun.spot(45,0,0.01)]
 rt = Raytracer(sun, 50, spots)
 
 # simulate RV measurement with Voigt spectra at a time

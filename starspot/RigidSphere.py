@@ -32,7 +32,12 @@ class RigidSphere:
         mat = geometry.rotation_matrix(-self.scalar_angvel * t, self.axis)
         return np.dot( points, mat.transpose() )
 
-    def spot(self, theta, phase, size):
+    def occlude(self, pos, theta, points):
+        # Return a boolean mask of occluded points.
+        cosines = np.dot( points/self.radius, pos/self.radius )
+        return cosines >= math.cos(theta)
+
+    def spot(self, theta, phase, fracarea):
         # Given spherical coords, get absolute coords
         # Convention: theta is a latitude in degrees: 0 = equator, +90 = north pole
         # Phase is in periods: 0 = transit, 0.5 = opposition, 1 = next transit
@@ -52,4 +57,4 @@ class RigidSphere:
         mat = geometry.rotation_matrix(-2.0 * math.pi * phase, self.axis)
         p = np.dot(p, mat.transpose())
 
-        return (p, size)
+        return (p, geometry.cap_half_angle(fracarea))
