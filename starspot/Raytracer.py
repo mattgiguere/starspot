@@ -9,7 +9,7 @@ import physics
 class Raytracer:
     # A raytracer simulation instance, keeping precomputed information.
     # Target is assumed to be a sphere, with property radius.
-    def __init__(self, target, resolution, spots = []):
+    def __init__(self, target, spots = [], resolution = 50):
         # Constructor. Precomputes ray hits.
         self.target = target
         self.resolution = resolution
@@ -42,15 +42,18 @@ class Raytracer:
     def trace(self, t):
         # Computes attenuations at all points at time t.
         mask = np.copy( self.base_mask )
-        for pos,size in self.spots:
-            r = pos - self.target.evolve(self.points, t)
-            norms = np.apply_along_axis(np.linalg.norm, 1, r)
-            mask[norms <= size] *= 0.1
+        for pos,theta in self.spots:
+            pos_t = self.target.evolve(pos, -t)
+            mask[ self.target.occlude(pos_t, theta, self.points) ] = 0
         return mask
 
-    def mean_radvel(self, mask):
-        # Computes apparent RV at time t.
+    def mean_rv(self, mask):
+        # Computes apparent RV at with attenuation mask.
         return np.average( self.radvels, weights=mask )
+
+    def rv(self, t):
+        # Computes apparent RV at time t.
+        return self.mean_rv( self.trace(t) )
 
     def render(self, mask):
         # Render this instance at time t.
@@ -65,6 +68,6 @@ class Raytracer:
             else: # redshift
                 rgb[x,y,0] = 1
                 rgb[x,y,1] = rgb[x,y,2] = 1-rv/rv_scale
-            rgb[x,y,:] *= atten
+            rgb[x,y,:] *= atten * 0.8 * math.pi
 
         return rgb

@@ -14,3 +14,15 @@ import math
 from RigidSphere import *
 from Raytracer import *
 from FastOccluder import *
+
+def get_rvs(sim, T, verbose=False):
+    # takes a simulation object, and returns RV time series
+    if verbose:
+        print "begin trace"
+
+    rv = np.zeros( len(T) )
+    for i,t in enumerate(T):
+        if verbose:
+            print "trace %d/%d (t=%f)" % (i+1, len(T), t)
+        rv[i] = sim.rv(t)
+    return rv

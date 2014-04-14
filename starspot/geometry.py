@@ -20,3 +20,15 @@ def rotation_matrix(angle, direction):
 def inclined_axis(angle):
     angle *= math.pi/180.
     return [0, math.cos(angle), math.sin(angle)]
+
+# (R, half angle) -> spherical cap area
+def cap_area(R, theta):
+    return 2. * math.pi * R**2 * (1 - math.cos(theta))
+
+# half angle -> cap area / sphere area
+def frac_cap_area(theta):
+    return 0.5 * (1 - math.cos(theta))
+
+# cap area / sphere area -> half angle (inverse of frac_cap_area)
+def cap_half_angle(fracarea):
+    return math.acos(1. - 2.*fracarea)
