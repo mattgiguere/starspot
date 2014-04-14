@@ -30,5 +30,5 @@ for i,lat in enumerate(L):
     plt.xlabel('JD')
     plt.ylabel('RV (m/s)')
     plt.plot(T/86400.,rv)
-    # np.save('renders/latitude/rvdata/rv%d.npy' % i, rv)
-    plt.savefig('renders/latitude/frames/frame%03d.png' % i)
+    # np.save('build/latitude/rvdata/rv%d.npy' % i, rv)
+    plt.savefig('build/latitude/frames/frame%03d.png' % i)
