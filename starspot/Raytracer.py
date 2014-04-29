@@ -56,7 +56,7 @@ class Raytracer:
         return self.mean_rv( self.trace(t) )
 
     def render(self, mask, black=False, soften_scale=1.):
-        # Render this instance at time t.
+        # Render this instance with a given mask.
         if black:
             rgb = np.zeros((self.resolution, self.resolution, 3))
         else:
