@@ -55,12 +55,15 @@ class Raytracer:
         # Computes apparent RV at time t.
         return self.mean_rv( self.trace(t) )
 
-    def render(self, mask):
-        # Render this instance at time t.
-        rgb = np.zeros((self.resolution, self.resolution, 3))
+    def render(self, mask, black=False, soften_scale=1.):
+        # Render this instance with a given mask.
+        if black:
+            rgb = np.zeros((self.resolution, self.resolution, 3))
+        else:
+            rgb = np.ones((self.resolution, self.resolution, 3))
 
         # scale RVs
-        rv_scale = 1+np.max( np.abs(self.radvels) )
+        rv_scale = ( 1+np.max( np.abs(self.radvels) ) ) * soften_scale
         for y,x,rv,atten in izip(self.pixels[0], self.pixels[1], self.radvels, mask):
             if rv<0: # blueshift
                 rgb[x,y,2] = 1
