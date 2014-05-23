@@ -2,6 +2,7 @@
 # Program that adds time-varying component to starspot area
 # Empirical expressions from sunspot data
 # fracarea max ~0.000984 (3000 MSH), observed by Livadiotis & Moussas (2007)
+# Only umbral area considered
 
 import numpy as np
 import math
