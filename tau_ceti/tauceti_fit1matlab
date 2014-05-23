@@ -1,0 +1,17 @@
+MATLAB fit data corresponding to tauceti_fit1.jpg:
+
+General model:
+     f(x) = a*sin((b*pi)*(x+c)/d) + e*x -f
+Coefficients (with 95% confidence bounds):
+       a =       2.146  (-105.4, 109.7)
+       b =           2  (-654.1, 658.1)
+       c =          13  (-535.2, 561.2)
+       d =          32  (-1.047e+04, 1.053e+04)
+       e =     0.02701  (0.01726, 0.03675)
+       f =       439.9  (281.2, 598.7)
+
+Goodness of fit:
+  SSE: 921.9
+  R-square: 0.3805
+  Adjusted R-square: 0.3665
+  RMSE: 2.038

@@ -2,7 +2,6 @@
 
 import numpy as np
 import math
-
 import geometry
 
 class RigidSphere:
@@ -36,6 +35,8 @@ class RigidSphere:
         # Return a boolean mask of occluded points.
         cosines = np.dot( points/self.radius, pos/self.radius )
         return cosines >= math.cos(theta)
+
+## editing starts here
 
     def spot(self, theta, phase, fracarea):
         # Given spherical coords, get absolute coords
