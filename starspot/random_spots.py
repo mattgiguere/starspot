@@ -11,21 +11,20 @@ from scipy import stats
 class RandomSpots:
 	# Areas & Locations 
 
-	def lognorm(M, s, N): 
-	# M = mu, s = sigma, N = expected number of spots
-	# lognormal area distribution 
-	# Bogdan et al. (1988) --> Hathaway & Choundary. (2008)
+	def lognorm(mu, s, N): 
+	# mu = mean of ln(A), s = sigma of ln(A), N = expected number of spots
+	# Bogdan et al. (1988) --> Hathaway & Choundary (2008)
 
 		shape = s # scipy's shape parameter
-		scale = np.exp(M) # scipy's scale parameter
-		median = np.exp(M)
-		mode = np.exp(M - s**2) 
-		mean = np.exp(M + (s**2/2))  
-		area = np.linspace(1.5, 141, num = 400) # values for x-axis
-		number = stats.lognorm.pdf(area, shape, loc = 0, scale = scale) 
-		plt.plot(area, number)
-
-		print "area, number:", area, number
+		scale = np.exp(mu) # scipy's scale parameter
+		median = np.exp(mu)
+		mode = np.exp(mu - s**2) 
+		mean = np.exp(mu + (s**2/2))  
+		A = np.linspace(1.5, 141, num = 400) # values for x-axis
+		number = stats.lognorm.pdf(A, shape, loc = 0, scale = scale) 
+		plt.plot(A, number)
+		areas = np.random.lognormal(mu, s, N)
+		print "areas:", areas
 
 	def position(N):
 	    # Random longitude values
@@ -36,6 +35,9 @@ class RandomSpots:
 	    x = np.random.uniform(0.0, 1.0, N)
 	    lat = math.asin(2*x+1)
 	    print "latitude:", lat
+
+	def match():
+		# ask Tyler how to randomly assign elements in a list to elements in another list
 
 	
 	    
