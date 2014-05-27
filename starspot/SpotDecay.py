@@ -13,10 +13,10 @@ def spot_decay(time, fracarea):
 
     # calculate decay rate D from Martínez Pillet et al. (1993)
     D = np.random.lognormal(1.75,math.sqrt(2),1)
-    print "Decay Rate", D
+    print "Decay Rate:", D
 
     initial_area = fracarea*(6.1*10**12) # solar surface area 
-    print "Inital Area", initial_area
+    print "Inital Area:", initial_area
 
     # pick exponential decay (A > 200 MSH) from Bumba (1963)
     if fracarea > 0.00009836:
@@ -43,7 +43,7 @@ def spot_decay(time, fracarea):
 
     print "Spot Area (km^2)", spot_area 
     fracarea = spot_area/(6.1*10**12) 
-    print "fracarea", fracarea
-    
+    print "fracarea:", fracarea
+
 
 
