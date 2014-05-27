@@ -44,6 +44,6 @@ def spot_decay(time, fracarea):
     print "Spot Area (km^2)", spot_area 
     fracarea = spot_area/(6.1*10**12) 
     print "fracarea", fracarea
-     
+    
 
 
