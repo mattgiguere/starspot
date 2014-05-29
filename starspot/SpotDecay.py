@@ -12,6 +12,7 @@ def spot_decay(time, fracarea):
     # Given initial fractional area (fracarea), compute spot dissolution
 
     # calculate decay rate D from Martínez Pillet et al. (1993)
+    # D: MSH/day
     D = np.random.lognormal(1.75,math.sqrt(2),1)
     print "Decay Rate:", D
 

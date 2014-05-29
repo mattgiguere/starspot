@@ -36,7 +36,7 @@ class RigidSphere:
         cosines = np.dot( points/self.radius, pos/self.radius )
         return cosines >= math.cos(theta)
 
-## editing starts here
+## SpotDecay.py insert?
 
     def spot(self, theta, phase, fracarea):
         # Given spherical coords, get absolute coords
