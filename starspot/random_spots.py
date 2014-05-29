@@ -1,6 +1,9 @@
+## PROBABLY USELESS if considering maximum entropy model ##
+
 # Written by Aida Behmard, 5/22/2014
 # Program that adds random coverage by starspots (1.5-141 MSH)
 # Refer to Jeffers et al. (2014)
+
 
 import numpy as np
 import math
