@@ -6,7 +6,7 @@ from scipy.optimize import leastsq
 from scipy.stats import linregress
 from starspot import *
 
-data = np.load('tau_ceti/cutdata.npy')
+data = np.load('cutdata.npy')
 
 T = data[:,0] * 86400.
 RV = data[:,3]
