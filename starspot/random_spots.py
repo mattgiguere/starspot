@@ -24,7 +24,11 @@ class RandomSpots:
 		number = stats.lognorm.pdf(A, shape, loc = 0, scale = scale) 
 		plt.plot(A, number)
 		areas = np.random.lognormal(mu, s, N)
-		print "areas:", areas
+		print "areas:", areas # MSH
+
+		# make in terms of fracarea
+		fracearas = areas/(6.1*10**12)
+		print "Fractional Spot Areas", fracareas 
 
 	def position(N):
 	    # Random longitude values
@@ -36,9 +40,7 @@ class RandomSpots:
 	    lat = math.asin(2*x+1)
 	    print "latitude:", lat
 
-	def match():
-		# ask Tyler how to randomly assign elements in a list to elements in another list
-
+	
 	
 	    
 
