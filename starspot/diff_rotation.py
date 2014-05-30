@@ -14,3 +14,6 @@ def rotation(eq_rate, pol_rate, theta): # theta = lat
 	diff_rate = eq_rate - pol_rate
 	rot_rate = eq_rate - diff_rate*math.sin(theta)**2
 	print "Rotation Rate", rot_rate
+	
+	period = 2*math.pi / rot_rate
+	print "Rotation Period", period
