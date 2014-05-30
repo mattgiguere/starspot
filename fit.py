@@ -54,3 +54,10 @@ plt.scatter(T, RV + m*T + b)
 plt.plot(T, rv(bp) + m*T + b, label='guess')
 plt.legend()
 plt.show()
+
+# Save the data to a CSV file
+fit_rv = rv(bp) + m*T + b
+true_rv = RV + m*T + b
+
+np.savetxt('rv_fit.txt', np.c_[T,fit_rv,true_rv])
+print "File saved with filename: rv_fit.txt"
