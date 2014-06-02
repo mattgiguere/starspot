@@ -15,11 +15,12 @@ def spot_decay(time, fracarea):
     # Given initial fractional area (fracarea), compute spot dissolution
 
     # calculate decay rate D from Martínez et al. (1993)
-    # D: MSH/day
+    # D: km^2/day
 
     sys.setrecursionlimit(50000)
 
-    D = np.random.lognormal(1.75, math.sqrt(2), 1)
+    D_MSH = np.random.lognormal(1.75, math.sqrt(2), 1) # MSH/day 
+    D = D_MSH*3*10**6
     print "Decay Rate:", D
 
     initial_area = fracarea*(6.1*10**12) # solar surface area 
@@ -52,7 +53,7 @@ def spot_decay(time, fracarea):
     fracarea2 = spot_area/(6.1*10**12) 
     print "New Fractional Area:", fracarea2
 
-    if fracarea2 > 0.000019999:
+    if fracarea2 > 0.000000001:
         spot_decay(time, fracarea2)
 
     else:
