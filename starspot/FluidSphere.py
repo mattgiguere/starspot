@@ -25,16 +25,16 @@ class FluidSphere:
         print "Rotation Rate", rot_rate
 
         period = 2*math.pi / rot_rate
-        print "Rotation Period", period
+        return period
 
 
 
-    def __init__(self, radius, period, axis):
+    def __init__(self, radius, theta, axis):
         # Constructor. Builds angular velocity vector using period and axis.
         self.radius = radius
         self.axis = np.array(axis)
         self.axis = self.axis / np.linalg.norm(self.axis)
-        self.scalar_angvel = 2*math.pi / period
+        self.scalar_angvel = 2*math.pi / period(theta)
         self.const_angvel = self.scalar_angvel * self.axis
 
     def angvel(self, points):

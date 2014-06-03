@@ -17,18 +17,14 @@ def spot_decay(t, fracarea, star_surfarea): # time = 1, sun_surfarea = 6.1e12
     # calculate decay rate D from Martínez et al. (1993)
     # D: km^2/day
 
-
-    # ----------------------------- Sets recursion iterations --------------------
-    # sys.setrecursionlimit(50000)
-    # ----------------------------------------------------------------------------
-
-
     D_MSH = np.random.lognormal(1.75, math.sqrt(2), 1) # MSH/day 
     D = D_MSH*3e6
     print "Decay Rate (km^2/day):", D
 
     initial_area = fracarea*(star_surfarea) # solar surface area (km^2)
     print "Inital Area (km^2):", initial_area
+
+    # ------------------------------------------------------------------------------
 
     # pick exponential decay (A > 200 MSH) from Bumba (1963)
     if fracarea > 0.00009836:
@@ -57,21 +53,25 @@ def spot_decay(t, fracarea, star_surfarea): # time = 1, sun_surfarea = 6.1e12
     fracarea2 = spot_area/(star_surfarea) 
     print "Fractional Area (km^2)", fracarea2
 
+    # ------------------------------------------------------------------------------
+
     # define as theta
     r_star = math.sqrt(star_surfarea / 4*math.pi)
     r_spot = math.sqrt(spot_area / math.pi)
 
     theta = math.atan(r_spot / r_star)
-    return theta   # degrees
+    print "theta:", theta
+
+    # ------------------------------------------------------------------------------
+
+    # while loop
+    while fracarea2 > 0.000000001:
+        return spot_decay(t, fracarea2, star_surfarea)
+
+    else:
+        print "Area = 0"
+
     
-
-    # ----------------------------------------- Recursive ----------------------
-    #if fracarea2 > 0.000000001:
-        #spot_decay(t, fracarea2)
-
-    #else:
-        #print "Area = 0"
-    # --------------------------------------------------------------------------
 
 
     
