@@ -11,7 +11,7 @@ import math
 import random
 import sys
 
-def spot_decay(t, fracarea): # time = 1
+def spot_decay(t, fracarea, star_surfarea): # time = 1, sun_surfarea = 6.1e12
 
     # Given initial fractional area (fracarea), compute spot dissolution
     # calculate decay rate D from Martínez et al. (1993)
@@ -20,10 +20,10 @@ def spot_decay(t, fracarea): # time = 1
     #sys.setrecursionlimit(50000)
 
     D_MSH = np.random.lognormal(1.75, math.sqrt(2), 1) # MSH/day 
-    D = D_MSH*3*10**6
-    print "Decay Rate:", D
+    D = D_MSH*3e6
+    print "Decay Rate (km^2/day):", D
 
-    initial_area = fracarea*(6.1*10**12) # solar surface area 
+    initial_area = fracarea*(star_surfarea) # solar surface area (km^2)
     print "Inital Area (km^2):", initial_area
 
     # pick exponential decay (A > 200 MSH) from Bumba (1963)
@@ -50,21 +50,27 @@ def spot_decay(t, fracarea): # time = 1
         print "Model: Linear, time condition not met"
 
     print "Current Area (km^2):", spot_area 
-    fracarea2 = spot_area/(6.1*10**12) 
-    return fracarea2
+    fracarea2 = spot_area/(star_surfarea) 
+    print "Fractional Area (km^2)", fracarea2
 
+    # define as theta
+    r_star = math.sqrt(star_surfarea / 4*math.pi)
+    r_spot = math.sqrt(spot_area / math.pi)
+
+    theta = math.atan(r_spot / r_star)
+    return theta   # degrees
+    
+
+    # ----------------------------------------- Recursive -------
     #if fracarea2 > 0.000000001:
         #spot_decay(t, fracarea2)
 
     #else:
         #print "Area = 0"
+    # -----------------------------------------------------------
 
-    # Save the data to a CSV file
-    ## fit_rv = rv(bp) + m*T + b
-    ## true_rv = RV + m*T + b 
 
-    ## np.savetxt('spot_decay.txt', np.c_[T,fit_rv,true_rv])
-    ## print "File saved with filename: rv_fit.txt"
+    
 
     
 

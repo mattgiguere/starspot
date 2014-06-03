@@ -4,7 +4,7 @@ import math
 import numpy as np
 from itertools import izip
 from scipy.integrate import quad
-from SpotDecay import spot_decay
+from SpotDecay import *
 
 import physics
 
@@ -26,7 +26,7 @@ class FastOccluder:
                 # behind star
                 continue
 
-            area = math.pi * math.sin(theta)**2
+            area = math.pi * math.sin(theta(t))**2
             area *= math.sqrt(1 - pos_t[0]**2 - pos_t[1]**2 ) # perspective
 
             R = self.target.radius
