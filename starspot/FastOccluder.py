@@ -4,6 +4,7 @@ import math
 import numpy as np
 from itertools import izip
 from scipy.integrate import quad
+from SpotDecay import spot_decay
 
 import physics
 
@@ -20,7 +21,7 @@ class FastOccluder:
         # Computes approximate mean RV time t.
         rv_all = 0
         for pos,theta in self.spots:
-            pos_t = self.target.evolve(pos, -t) / self.target.radius
+            pos_t = self.target.evolve(pos, -theta(t)) / self.target.radius
             if pos_t[2] < 0:
                 # behind star
                 continue
