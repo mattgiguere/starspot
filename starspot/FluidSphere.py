@@ -5,7 +5,7 @@
 ## Diff. rotation velocity notes ##
 # - Ref: "Living Reviews in Solar Physics"
 # - Donati  & Collier Cameron (1997):
-# - AB Doradus = K dwarf
+# - AB Doradus => K dwarf
 # - eq_rate = 12.2434 rad/d; diff_rate = 0.0564 rad/d
 
 # ASSUMING that period(theta) has problems 
@@ -27,9 +27,9 @@ class FluidSphere:
         print "Rotation Rate", rot_rate
 
         period = 2*math.pi / rot_rate
-        return period
+        print "Period:", period
 
-
+    # -----------------------------------------------------------------------------
 
     def __init__(self, radius, theta, axis):
         # Constructor. Builds angular velocity vector using period and axis.
@@ -58,7 +58,7 @@ class FluidSphere:
         cosines = np.dot( points/self.radius, pos/self.radius )
         return cosines >= math.cos(theta)
 
-
+    # -----------------------------------------------------------------------------
 
     def spot(self, theta, phase, fracarea):
         # Given spherical coords, get absolute coords

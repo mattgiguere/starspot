@@ -53,16 +53,7 @@ def spot_decay(t, fracarea, star_surfarea): # time = 1, sun_surfarea = 6.1e12
     fracarea2 = spot_area/(star_surfarea) 
     print "Fractional Area (km^2)", fracarea2
 
-    # ------------------------------------------------------------------------------
-
-    # define as theta
-    r_star = math.sqrt(star_surfarea / 4*math.pi)
-    r_spot = math.sqrt(spot_area / math.pi)
-
-    theta = math.atan(r_spot / r_star)
-    print "theta:", theta
-
-    # ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
     # while loop
     while fracarea2 > 0.000000001:
@@ -70,6 +61,18 @@ def spot_decay(t, fracarea, star_surfarea): # time = 1, sun_surfarea = 6.1e12
 
     else:
         print "Area = 0"
+
+# ------------------------------------------------------------------------------
+
+# define as theta
+ def theta(t):
+    r_star = math.sqrt(star_surfarea / 4*math.pi)
+    r_spot = math.sqrt(spot_area / math.pi)
+
+    theta = math.atan(r_spot / r_star)
+    print "theta:", theta
+
+
 
     
 
