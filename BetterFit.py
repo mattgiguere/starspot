@@ -1,5 +1,6 @@
 # Written by Aida Behmard, 6/3/2014
-# Rigorous replacement for fit.py
+# Replacement for fit.py
+# Achieves precisions of 1 m/s
 # Employes max entropy model (MEM)
 
 # Saves data to a CSV

@@ -17,19 +17,20 @@ class FastOccluder:
         self.spots = spots
         self.max_rv = target.max_radvel()
 
-    def rv(self, t, fracarea):
+    def rv(self, t, area): # area => spot area
         # Computes approximate mean RV time t.
+
         rv_all = 0
-        for pos,spot_theta(t, fracarea) in self.spots:
-            pos_t = self.target.evolve(pos, -spot_theta(t, fracarea)) / self.target.radius
+        for pos,spot_theta(t, area) in self.spots:
+            pos_t = self.target.evolve(pos, -spot_theta(t, area)) / self.target.radius
             if pos_t[2] < 0:
                 # behind star
                 continue
 
-            area = math.pi * math.sin(spot_theta(t, fracarea))**2
+            area = math.pi * math.sin(spot_theta(t, area))**2
             area *= math.sqrt(1 - pos_t[0]**2 - pos_t[1]**2 ) # perspective
 
-            R = self.target.radius
+            R = self.target.radiuss
             rv = self.max_rv * pos_t[0]
             ld = physics.default_limb_darkening(math.acos( pos_t[2] ))
             rv_all -= area * rv * ld
