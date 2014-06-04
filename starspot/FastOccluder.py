@@ -2,7 +2,6 @@
 # Edited by Aida (6/3): theta(t) in ln. 25 has problems (trying to import SpotDecay.py)
 
 import math
-import numpy as np
 from itertools import izip
 from scipy.integrate import quad
 from SpotDecay import *
@@ -18,16 +17,16 @@ class FastOccluder:
         self.spots = spots
         self.max_rv = target.max_radvel()
 
-    def rv(self, t):
+    def rv(self, t, fracarea):
         # Computes approximate mean RV time t.
         rv_all = 0
-        for pos,theta in self.spots:
-            pos_t = self.target.evolve(pos, -theta(t)) / self.target.radius
+        for pos,spot_theta(t, fracarea) in self.spots:
+            pos_t = self.target.evolve(pos, -spot_theta(t, fracarea)) / self.target.radius
             if pos_t[2] < 0:
                 # behind star
                 continue
 
-            area = math.pi * math.sin(theta(t))**2
+            area = math.pi * math.sin(spot_theta(t, fracarea))**2
             area *= math.sqrt(1 - pos_t[0]**2 - pos_t[1]**2 ) # perspective
 
             R = self.target.radius
