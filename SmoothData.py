@@ -1,6 +1,6 @@
 # Written by Aida Behmard, 6/4/2014
 # Smoothes raw RV data 
-# "wiener(t,y,y_smooth)"
+# "wiener(t)"
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,17 +11,23 @@ data = np.load('tau_ceti/cutdata.npy') # example
 
 t = data[:,0]
 y = data[:,1]
-y_wiener = wiener(data[:,1])
 y_smooth = data[:,3]
 
-def wiener(time, rv, rv_smooth):
+def wiener_filter(time):
+
+	rv_err = data[:,2]
+
+	# Compute variance from given RV errors
+	variance = sum(x*x for x in rv_err) / 228 # N = 228
+	y_wiener = wiener(data[:,1], 500, variance) # wiener(im, box_size, noise)
+
 	# Using Wiener filter
 	plt.figure(1)
 	plt.subplot(211)
-	plt.plot(t, y, 'o', color = 'b', label = 'Raw')
-	plt.plot(t, y, color = 'b') # raw RV data
+	plt.plot(time, y, 'o', color = 'b', label = 'Raw')
+	plt.plot(time, y, color = 'b') # raw RV data
 
-	plt.plot(t, y_wiener, 'o', color = 'r', label = 'Wiener') # smooth RV data
+	plt.plot(time, y_wiener, 'o', color = 'r', label = 'Wiener') # smooth RV data
 	plt.legend(loc='lower right', numpoints = 1)
 
 	plt.title('Tau Ceti: Wiener Filter')
@@ -30,10 +36,10 @@ def wiener(time, rv, rv_smooth):
 
     # Using default smooth data
 	plt.subplot(212)
-	plt.plot(t, y, 'o', color = 'b', label = 'Raw')
-	plt.plot(t, y, color = 'b') # raw RV data
+	plt.plot(time, y, 'o', color = 'b', label = 'Raw')
+	plt.plot(time, y, color = 'b') # raw RV data
 
-	plt.plot(t, y_smooth, 'o', color = 'r', label = 'Default Smooth') # smooth RV data
+	plt.plot(time, y_smooth, 'o', color = 'r', label = 'Default Smooth') # smooth RV data
 	plt.legend(loc='lower right', numpoints = 1)
 
 	plt.xlabel('JD - 2.44e6')
