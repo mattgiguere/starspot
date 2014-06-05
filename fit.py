@@ -14,7 +14,6 @@ RV = data[:,3]
 m, b, _, _, _ = linregress(T, RV)
 RV -= m*T + b
 
-
 def rv(p):
     inc, lat, phase, size = p
     star = RigidSphere(0.793 * 6.955e8, 34. * 86400., [0,math.cos(inc),math.sin(inc)])

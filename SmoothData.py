@@ -5,7 +5,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import wiener 
-from pylab import *
 
 data = np.load('tau_ceti/cutdata.npy') # example
 
