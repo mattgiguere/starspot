@@ -18,7 +18,7 @@ t = data[:,0]
 y = data[:,1]
 
 plot(t, y, "k.")
-y_av = running_average(y, 10)
+y_av = running_average(y, 20)
 plot(t, y_av, 'o', color = 'r')
 xlim(16241.718, 16336.539)
 xlabel("Julian Days")
