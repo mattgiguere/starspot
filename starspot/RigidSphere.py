@@ -36,7 +36,6 @@ class RigidSphere:
         cosines = np.dot( points/self.radius, pos/self.radius )
         return cosines >= math.cos(theta)
 
-
     def spot(self, theta, phase, fracarea):
         # Given spherical coords, get absolute coords
         # Convention: theta is a latitude in degrees: 0 = equator, +90 = north pole

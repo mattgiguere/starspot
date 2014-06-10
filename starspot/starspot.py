@@ -11,6 +11,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
+from FluidSphere import *
 from RigidSphere import *
 from Raytracer import *
 from FastOccluder import *

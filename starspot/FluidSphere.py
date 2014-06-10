@@ -14,34 +14,27 @@ import numpy as np
 import math
 import geometry
 import random
+import physics
 
 class FluidSphere:
     # Fluid sphere model of a star.
     # A star is a sphere at (0,0,0). The observer looks in the -z direction.
     # Rotation inclination is given by an angular velocity vector (numpy 3-array)
-
-
-    def rotation(eq_rate, pol_rate, theta):  # theta = lat 
-        diff_rate = eq_rate - pol_rate
-        rot_rate = eq_rate - diff_rate*math.sin(theta)**2
-        print "Rotation Rate", rot_rate
-
-        period = 2*math.pi / rot_rate
-        print "Period:", period
-
     # -----------------------------------------------------------------------------
 
-    def __init__(self, radius, theta, axis):
+    def __init__(self, radius, eq_period, polar_period, axis):
         # Constructor. Builds angular velocity vector using period and axis.
         self.radius = radius
         self.axis = np.array(axis)
         self.axis = self.axis / np.linalg.norm(self.axis)
-        self.scalar_angvel = 2*math.pi / period
-        self.const_angvel = self.scalar_angvel * self.axis
+        self.eq_angvel = 2*math.pi / eq_period
+        self.polar_angvel = 2*math.pi / polar_period
 
     def angvel(self, points):
         # Takes points to angular velocities. Trivial constant function in this case.
-        return np.tile( self.const_angvel, (points.shape[0], 1) )
+        lats = geometry.points_to_latitudes(points/self.radius, self.axis)
+        vels = physics.fluid_rotation(self.eq_angvel, self.polar_angvel, lats)
+        return np.kron(self.axis, vels.reshape(len(vels), 1))
 
     def max_radvel(self):
         # Magnitude of RV at star's edge (accounting for inclination).
@@ -50,7 +43,11 @@ class FluidSphere:
 
     def evolve(self, points, t):
         # Given points at time 0, return points at time t.
-        mat = geometry.rotation_matrix(-self.scalar_angvel * t, self.axis)
+        lats = geometry.points_to_latitudes(points/self.radius, self.axis)
+        vels = physics.fluid_rotation(self.eq_angvel, self.polar_angvel, lats)
+        result = np.zeros(points.shape)
+
+        mat = geometry.rotation_matrix(-vels * t, self.axis)
         return np.dot( points, mat.transpose() )
 
     def occlude(self, pos, theta, points):
