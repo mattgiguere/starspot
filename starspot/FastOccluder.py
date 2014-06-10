@@ -1,9 +1,10 @@
 # FastOccluder.py: fast algorithm for computing RV distribution
+# Edited by Aida (6/3): theta(t) in ln. 25 has problems (trying to import SpotDecay.py)
 
 import math
-import numpy as np
 from itertools import izip
 from scipy.integrate import quad
+from SpotDecay import *
 
 import physics
 
@@ -16,7 +17,7 @@ class FastOccluder:
         self.spots = spots
         self.max_rv = target.max_radvel()
 
-    def rv(self, t):
+    def rv(self, t): # area => spot area
         # Computes approximate mean RV time t.
         rv_all = 0
         for pos,theta in self.spots:

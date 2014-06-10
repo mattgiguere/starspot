@@ -1,20 +1,28 @@
-# fit.py: RV curve fitting.
-# pulls from FastOccluder.py
+# Written by Aida Behmard, 6/3/2014
+# Replacement for fit.py
+# Achieves precisions of 1 m/s
+# Employes max entropy model (MEM)
+
+# Saves data to a CSV
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.optimize import leastsq
-from scipy.stats import linregress
 from starspot import *
 
-data = np.load('cutdata.npy')
+from scipy.optimize import leastsq
+from scipy.stats import linregress
+# from scipy import maxentropy
+
+data = np.load('tau_ceti/cutdata.npy')
 
 T = data[:,0] * 86400.
 RV = data[:,3]
 
+# somehow picks nice values for m and b?
 m, b, _, _, _ = linregress(T, RV)
 RV -= m*T + b
 
+# matches raw data to simulated star?
 def rv(p):
     inc, lat, phase, size = p
     star = RigidSphere(0.793 * 6.955e8, 34. * 86400., [0,math.cos(inc),math.sin(inc)])
@@ -22,6 +30,7 @@ def rv(p):
     return get_rvs(occ, T)
 
 # coarse search over parameter space to find a guess
+# let's try chi-squared ~1 m/s
 def guess_fit():
     res = 12
     n = 0
@@ -35,15 +44,15 @@ def guess_fit():
                     print "try %d/%d" % (n, res**4)
                     p = [inc, lat, phase, size]
                     r = rv(p)
-                    e = np.linalg.norm( r - RV )
+                    e = np.linalg.norm( r - RV ) # picks one particular simulation setup?
                     if best_err == None or e < best_err:
                         best_params = p
                         best_err = e
     return best_params
 
 # use nonlinear optimization to refine fit
-def refine_fit(guess):
-    opt = leastsq(rv, guess)
+def chisquared_fit(guess):
+    opt = sum( math.sqrt((rv - guess)**2) / data[:,2]) 
     return opt
 
 bp = guess_fit()

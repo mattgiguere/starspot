@@ -1,15 +1,37 @@
-# RigidSphere.py: non-fluid spherical model of a star
+# Written by Aida Behmard, 6/3/2014
+# FluidSphere.py: fluid spherical model of a star
+# Accomadates differential angular velocities for spots ar different latitudes
+
+## Diff. rotation velocity notes ##
+# - Ref: "Living Reviews in Solar Physics"
+# - Donati  & Collier Cameron (1997):
+# - AB Doradus => K dwarf
+# - eq_rate = 12.2434 rad/d; diff_rate = 0.0564 rad/d
+
+# ASSUMING that period(theta) has problems 
 
 import numpy as np
 import math
 import geometry
+import random
 
-class RigidSphere:
-    # Rigid sphere model of a star.
+class FluidSphere:
+    # Fluid sphere model of a star.
     # A star is a sphere at (0,0,0). The observer looks in the -z direction.
     # Rotation inclination is given by an angular velocity vector (numpy 3-array)
 
-    def __init__(self, radius, period, axis):
+
+    def rotation(eq_rate, pol_rate, theta):  # theta = lat 
+        diff_rate = eq_rate - pol_rate
+        rot_rate = eq_rate - diff_rate*math.sin(theta)**2
+        print "Rotation Rate", rot_rate
+
+        period = 2*math.pi / rot_rate
+        print "Period:", period
+
+    # -----------------------------------------------------------------------------
+
+    def __init__(self, radius, theta, axis):
         # Constructor. Builds angular velocity vector using period and axis.
         self.radius = radius
         self.axis = np.array(axis)
@@ -36,6 +58,7 @@ class RigidSphere:
         cosines = np.dot( points/self.radius, pos/self.radius )
         return cosines >= math.cos(theta)
 
+    # -----------------------------------------------------------------------------
 
     def spot(self, theta, phase, fracarea):
         # Given spherical coords, get absolute coords
@@ -58,6 +81,3 @@ class RigidSphere:
         p = np.dot(p, mat.transpose())
 
         return (p, geometry.cap_half_angle(fracarea))
-
-
-   
