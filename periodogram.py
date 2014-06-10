@@ -11,14 +11,18 @@ from scipy.signal import lombscargle
 # Load Data
 data = np.load('tau_ceti/cutdata.npy')
 
-nout = 100000
-f = np.linspace(0.01, 10, nout)
-print "freqs", f
+# generates 10000 ang. frequencies between 16240 and 16340
+nout = 10000
+f = np.linspace(16240, 16340, nout)
 
 def periodogram(data, f):
 	t = data[:,0]
 	y = data[:,1] # flux
 	dy = data[:,2]
+
+	# computed periodogram is unnormalized
+	# takes the value (A**2) * N/4
+	# for a harmonic signal with amplitude A for sufficiently large N
 
 	pgram = lombscargle(t, y, f)
 
@@ -31,12 +35,14 @@ def periodogram(data, f):
 	normval = t.shape[0]
 
 	plt.subplot(2, 1, 2)
+
+	# plot normalized periodogram
 	plt.plot(f, np.sqrt(4*(pgram/normval)), label = 'Periodogram')
 	plt.legend(loc='upper right', numpoints = 1)
-	plt.xlabel('Frequency')
+	plt.xlabel('Frequency')   
 	plt.ylabel('Power')
 
 	plt.show()
 
-	big_period = 2*math.pi / f[np.argmax(pgram)]
-	print "dominant period", big_period
+	big_freq = f[np.argmax(pgram)]
+	print "dominant frequency =", big_freq
