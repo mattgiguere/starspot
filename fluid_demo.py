@@ -18,14 +18,23 @@ fluid_rt = Raytracer(fluid_star, spots, 150)
 
 plt.clf()
 
-plt.subplot(1,2,1) # plot rigid
+plt.subplot(2,2,1) # picture of rigid star
 rgb = rigid_rt.render( rigid_rt.trace(200000) )
 plt.axis('off')
 plt.imshow(rgb, interpolation='nearest', origin='lower')
 
-plt.subplot(1,2,2) # plot fluid
+plt.subplot(2,2,2) # picture of fluid star
 rgb = fluid_rt.render( fluid_rt.trace(200000) )
 plt.axis('off')
 plt.imshow(rgb, interpolation='nearest', origin='lower')
+
+T = np.linspace(0,2*period, 200)
+plt.subplot(2,2,3) # RV profile of rigid star
+rigid_occ = FastOccluder(rigid_star, spots)
+plt.plot(T, get_rvs(rigid_occ, T))
+
+plt.subplot(2,2,4) # RV profile of fluid star
+fluid_occ = FastOccluder(fluid_star, spots)
+plt.plot(T, get_rvs(fluid_occ, T))
 
 plt.show()

@@ -29,6 +29,7 @@ class FluidSphere:
         self.axis = self.axis / np.linalg.norm(self.axis)
         self.eq_angvel = 2*math.pi / eq_period
         self.polar_angvel = 2*math.pi / polar_period
+        self.scalar_angvel = max( self.eq_angvel, self.polar_angvel )
 
     def angvel(self, points):
         # Takes points to angular velocities. Trivial constant function in this case.
