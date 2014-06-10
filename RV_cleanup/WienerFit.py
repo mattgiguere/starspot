@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import wiener 
 
-data = np.load('tau_ceti/cutdata.npy') # example
+data = np.load('cutdata.npy') # example
 
 t = data[:,0]
 y = data[:,1]
@@ -18,7 +18,7 @@ def wiener_filter(time):
 
 	# Compute variance from given RV errors
 	variance = sum(x*x for x in rv_err) / 228 # N = 228
-	y_wiener = wiener(data[:,1], 100, variance) # wiener(im, box_size, noise)
+	y_wiener = wiener(data[:,1], 600, variance) # wiener(im, box_size, noise)
 
 	# Using Wiener filter
 	plt.figure(1)

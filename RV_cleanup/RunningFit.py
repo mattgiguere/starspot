@@ -6,7 +6,7 @@ from pylab import *
 from numpy import *
 import numpy as np
 
-data = np.load('tau_ceti/cutdata.npy') # example
+data = np.load('cutdata.npy') # example
 
 def running_average(interval, window_size):
 	# window_size: number of samples to consider
