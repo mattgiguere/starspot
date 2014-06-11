@@ -4,35 +4,41 @@
 
 import numpy as np
 import math
+import pyfits
 import matplotlib.pyplot as plt
 from scipy.signal import lombscargle
+from numpy import float64
 
 #------------------------------------------------------------
 # Load Data
-data = np.load('tau_ceti/cutdata.npy')
+star = pyfits.open('kepler_data/kplr001027710-2010078095331_llc.fits')
+tbdata = star[1].data
 
 # generates 10000 ang. frequencies between 16240 and 16340
-nout = 10000
-f = np.linspace(16240, 16340, nout)
+nout = 1000.0
+f = np.linspace(0.0, 2000.0, nout)
 
-def periodogram(data, f):
-	t = data[:,0]
-	y = data[:,1] # flux
-	dy = data[:,2]
+def periodogram(tbdata, f):
+
+	t = tbdata.field(0) 
+	y = tbdata.field(7) # corrected flux
+
+	newt = t.byteswap().newbyteorder()
+	newy = y.byteswap().newbyteorder()
 
 	# computed periodogram is unnormalized
 	# takes the value (A**2) * N/4
 	# for a harmonic signal with amplitude A for sufficiently large N
 
-	pgram = lombscargle(t, y, f)
+	pgram = lombscargle(newt.astype('float64'), newy.astype('float64'), f.astype('float64'))
 
 	plt.subplot(2, 1, 1)
-	plt.plot(t, y, 'b+', label = 'Time Series')
+	plt.plot(newt.astype('float64'), newy.astype('float64'), 'b+', label = 'Time Series')
 	plt.legend(loc='lower right', numpoints = 1)
 	plt.xlabel('Time')
 	plt.ylabel('Flux')
 
-	normval = t.shape[0]
+	normval = newt.shape[0]
 
 	plt.subplot(2, 1, 2)
 
