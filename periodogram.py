@@ -1,6 +1,6 @@
 # Written by Aida Behmard, 6/10/2014
 # Outputs periodogram give time series transit data
-# G8 dwarfs: 5000 < T < 50001, log(g) > 4.4
+# G8 dwarfs: 5200 < T < 5300, log(g) > 4.4, Kep_mag < 10
 
 import numpy as np
 import math
@@ -13,12 +13,12 @@ from numpy import isnan
 
 #------------------------------------------------------------
 # Load Data
-star = pyfits.open('kepler_data/mou.fits')
+star = pyfits.open('kepler_data/kplr007970740-2013131215648_llc.fits')
 tbdata = star[1].data
 
 # generates 10000 ang. frequencies between 16240 and 16340
 nout = 1000.0
-f = np.linspace(1.0, 2000.0, nout)
+f = np.linspace(1.0, 8.0, nout)
 
 t = tbdata.field(0) 
 y = tbdata.field(7) # corrected flux
@@ -43,7 +43,7 @@ def periodogram(time, flux, f):
 	pgram = lombscargle(newt.astype('float64'), newy.astype('float64'), f)
 
 	plt.subplot(2, 1, 1)
-	plt.plot(newt.astype('float64'), newy.astype('float64'), 'b+', label = 'Time Series')
+	plt.plot(newt.astype('float64'), newy.astype('float64'), '.', label = 'Time Series')
 	plt.legend(loc='lower right', numpoints = 1)
 	plt.xlabel('Time')
 	plt.ylabel('Flux')
@@ -53,14 +53,15 @@ def periodogram(time, flux, f):
 	plt.subplot(2, 1, 2)
 
 	print f, pgram
+	period = 2*math.pi / f
 
 	# plot normalized periodogram
-	plt.plot(f, np.sqrt(4*pgram/normval), label = 'Periodogram')
-	plt.legend(loc='upper right', numpoints = 1)
-	plt.xlabel('Frequency')   
+	plt.plot(period, np.sqrt(4*pgram/normval), label = 'Periodogram')
+	plt.legend(loc='lower right', numpoints = 1)
+	plt.xlabel('Period')   
 	plt.ylabel('Power')
 
 	plt.show()
 
-	big_freq = f[np.argmax(pgram)]
-	print "dominant frequency =", big_freq
+	big_period = period[np.argmax(pgram)]
+	print "dominant period =", big_period
