@@ -6,22 +6,26 @@ import numpy as np
 import math
 import pyfits
 import matplotlib.pyplot as plt
+
 from scipy.signal import lombscargle
 from numpy import float64
+from numpy import isnan
 
 #------------------------------------------------------------
 # Load Data
-star = pyfits.open('kepler_data/kplr001027710-2010078095331_llc.fits')
+star = pyfits.open('kepler_data/mou.fits')
 tbdata = star[1].data
 
 # generates 10000 ang. frequencies between 16240 and 16340
 nout = 1000.0
-f = np.linspace(0.0, 2000.0, nout)
+f = np.linspace(1.0, 2000.0, nout)
 
-def periodogram(tbdata, f):
+t = tbdata.field(0) 
+y = tbdata.field(7) # corrected flux
 
-	t = tbdata.field(0) 
-	y = tbdata.field(7) # corrected flux
+print "type 'periodogram(t, y, f)'"
+
+def periodogram(time, flux, f):
 
 	newt = t.byteswap().newbyteorder()
 	newy = y.byteswap().newbyteorder()
@@ -30,7 +34,12 @@ def periodogram(tbdata, f):
 	# takes the value (A**2) * N/4
 	# for a harmonic signal with amplitude A for sufficiently large N
 
-	pgram = lombscargle(newt.astype('float64'), newy.astype('float64'), f.astype('float64'))
+	keep = ~np.isnan(newy)
+	newy = newy[keep]
+	newt = newt[keep]
+	newy -= np.mean(newy)
+
+	pgram = lombscargle(newt.astype('float64'), newy.astype('float64'), f)
 
 	plt.subplot(2, 1, 1)
 	plt.plot(newt.astype('float64'), newy.astype('float64'), 'b+', label = 'Time Series')
@@ -42,8 +51,10 @@ def periodogram(tbdata, f):
 
 	plt.subplot(2, 1, 2)
 
+	print f, pgram
+
 	# plot normalized periodogram
-	plt.plot(f, np.sqrt(4*(pgram/normval)), label = 'Periodogram')
+	plt.plot(f, np.sqrt(4*pgram/normval), label = 'Periodogram')
 	plt.legend(loc='upper right', numpoints = 1)
 	plt.xlabel('Frequency')   
 	plt.ylabel('Power')
