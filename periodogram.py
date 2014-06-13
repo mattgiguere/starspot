@@ -26,19 +26,20 @@ y = tbdata.field(7) # corrected flux
 print "type 'periodogram(t, y, f)'"
 
 def periodogram(time, flux, f):
-
+ 
+    # endian conversion
 	newt = t.byteswap().newbyteorder()
 	newy = y.byteswap().newbyteorder()
 
-	# computed periodogram is unnormalized
-	# takes the value (A**2) * N/4
-	# for a harmonic signal with amplitude A for sufficiently large N
-
+    # exclude NaNs in data
 	keep = ~np.isnan(newy)
 	newy = newy[keep]
 	newt = newt[keep]
 	newy -= np.mean(newy)
 
+    # computed periodogram is unnormalized
+	# takes the value (A**2) * N/4
+	# for a harmonic signal with amplitude A for sufficiently large N
 	pgram = lombscargle(newt.astype('float64'), newy.astype('float64'), f)
 
 	plt.subplot(2, 1, 1)
