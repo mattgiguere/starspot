@@ -45,7 +45,7 @@ def periodogram(time, flux, f):
 	plt.subplot(2, 1, 1)
 	plt.plot(newt.astype('float64'), newy.astype('float64'), '.', label = 'Time Series')
 	plt.legend(loc='lower right', numpoints = 1)
-	plt.xlabel('Time')
+	plt.xlabel('Time (MJD)')
 	plt.ylabel('Flux')
 
 	normval = newt.shape[0]
@@ -58,7 +58,7 @@ def periodogram(time, flux, f):
 	# plot normalized periodogram
 	plt.plot(period, np.sqrt(4*pgram/normval), label = 'Periodogram')
 	plt.legend(loc='lower right', numpoints = 1)
-	plt.xlabel('Period')   
+	plt.xlabel('Period (MJD)')   
 	plt.ylabel('Power')
 
 	plt.show()
