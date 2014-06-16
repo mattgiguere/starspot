@@ -13,12 +13,12 @@ from numpy import isnan
 
 #------------------------------------------------------------
 # Load Data
-star = pyfits.open('kepler_data/kplr007970740-2013131215648_llc.fits')
+star = pyfits.open('kepler_data/kplr011924268-2012004120508_llc.fits')
 tbdata = star[1].data
 
 # generates 10000 ang. frequencies between 16240 and 16340
 nout = 1000.0
-f = np.linspace(1.0, 8.0, nout)
+f = np.linspace(0.09, 10.0, nout)
 
 t = tbdata.field(0) 
 y = tbdata.field(7) # corrected flux
