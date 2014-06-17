@@ -9,7 +9,9 @@ import numpy as np
 data = np.load('tau_ceti/cutdata.npy') # example
 
 def running_average(interval, window_size):
-	window = np.ones(int(window_size))/float(window_size)
+	# window_size: number of samples to consider
+	# window is centered on each sample
+	window = np.ones(int(window_size))/float(window_size) 
 	return np.convolve(interval, window, 'same')
 
 t = data[:,0]
