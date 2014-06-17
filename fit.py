@@ -1,4 +1,5 @@
 # fit.py: RV curve fitting.
+# pulls from FastOccluder.py
 
 import numpy as np
 import matplotlib.pyplot as plt

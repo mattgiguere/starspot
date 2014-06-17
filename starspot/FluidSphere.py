@@ -36,7 +36,7 @@ class FluidSphere:
         self.radius = radius
         self.axis = np.array(axis)
         self.axis = self.axis / np.linalg.norm(self.axis)
-        self.scalar_angvel = 2*math.pi / period(theta)
+        self.scalar_angvel = 2*math.pi / period
         self.const_angvel = self.scalar_angvel * self.axis
 
     def angvel(self, points):
