@@ -13,7 +13,7 @@ from scipy.optimize import leastsq
 from scipy.stats import linregress
 # from scipy import maxentropy
 
-data = np.load('tau_ceti/cutdata.npy')
+data = np.load('tau_ceti/npy/cutdata.npy')
 
 T = data[:,0] * 86400.
 RV = data[:,3]

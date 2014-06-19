@@ -13,7 +13,7 @@ from numpy import isnan
 
 #------------------------------------------------------------
 # Load Data
-star = pyfits.open('kepler_data/kplr011924268-2010355172524_llc.fits')
+star = pyfits.open('kepler_data/kepstitch.fits')
 tbdata = star[1].data
 
 # generates 10000 ang. frequencies between 16240 and 16340

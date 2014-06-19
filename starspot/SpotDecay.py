@@ -20,7 +20,7 @@ def spot_growth(max_area):
     # ends on max_area that becomes initial_area in spot_decay
 
     t = 1 # days
-    area = 3.9744*10**8*t # km^2 
+    area = 3.9744*10**8*t # km^2, from Schlichenmaier et al. (2010)
     while area < max_area:
         area = 3.9744*10**8*t
         t += 1
