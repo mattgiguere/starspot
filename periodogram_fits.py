@@ -21,7 +21,7 @@ nout = 1000.0
 f = np.linspace(0.2, 10.0, nout)
 
 t = tbdata.field(0) 
-y = tbdata.field(7) # corrected flux
+y = tbdata.field(20) # corrected flux
 
 print "type 'periodogram(t, y, f)'"
 
