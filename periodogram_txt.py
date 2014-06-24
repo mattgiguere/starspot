@@ -1,4 +1,4 @@
-# Written by Aida Behmard, 6/10/2014
+# Written by Aida Behmard, 6/23/2014
 # Outputs periodogram given time series Kepler transit data
 # G8 dwarfs: 5200 < T < 5300, log(g) > 4.4, Kep_mag < 10
 
@@ -11,14 +11,14 @@ from scipy.signal import lombscargle
 
 #------------------------------------------------------------
 # Load Data
-star = np.loadtxt('kepler_data/kepfinal.txt')
+star = np.loadtxt('kepler_data/noisy_stars/10006542.txt')
 
 # generates 10000 ang. frequencies between 16240 and 16340
 nout = 1000.0
-f = np.linspace(1.0, 10.0, nout)
+f = np.linspace(0.2, 10.0, nout)
 
-t = star[:,0] 
-y = star[:,3] # corrected flux
+t = star[:,1] 
+y = star[:,2] # corrected flux
 
 # exclude NaNs in data
 keep = ~np.isnan(y)
@@ -38,7 +38,7 @@ def periodogram(time, flux, f):
 
     plt.subplot(2, 1, 1)
     plt.plot(time, flux, '.', label = 'Time Series')
-    plt.legend(loc='lower right', numpoints = 1)
+    plt.legend(loc='upper right', numpoints = 1)
     plt.xlabel('Time (MJD)')
     plt.ylabel('Flux')
 
@@ -51,7 +51,7 @@ def periodogram(time, flux, f):
 
     # plot normalized periodogram
     plt.plot(period, np.sqrt(4*pgram/normval), label = 'Periodogram')
-    plt.legend(loc='lower right', numpoints = 1)
+    plt.legend(loc='upper right', numpoints = 1)
     plt.xlabel('Period (MJD)')
     plt.ylabel('Power')
 

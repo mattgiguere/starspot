@@ -13,7 +13,7 @@ from numpy import isnan
 
 #------------------------------------------------------------
 # Load Data
-star = pyfits.open('kepler_data/kepstitch.fits')
+star = pyfits.open('kepler_data/4660971/SOMETHING.fits') # example .fits file
 tbdata = star[1].data
 
 # generates 10000 ang. frequencies between 16240 and 16340
@@ -21,7 +21,7 @@ nout = 1000.0
 f = np.linspace(0.2, 10.0, nout)
 
 t = tbdata.field(0) 
-y = tbdata.field(20) # corrected flux
+y = tbdata.field(7) # corrected flux
 
 print "type 'periodogram(t, y, f)'"
 
