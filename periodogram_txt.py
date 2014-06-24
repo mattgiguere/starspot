@@ -11,11 +11,11 @@ from scipy.signal import lombscargle
 
 #------------------------------------------------------------
 # Load Data
-star = np.loadtxt('kepler_data/noisy_stars/10006542.txt')
+star = np.loadtxt('kepler_data/noisy_stars/11924268.txt')
 
 # generates 10000 ang. frequencies between 16240 and 16340
 nout = 1000.0
-f = np.linspace(0.2, 10.0, nout)
+f = np.linspace(0.07, 10.0, nout)
 
 t = star[:,1] 
 y = star[:,2] # corrected flux
