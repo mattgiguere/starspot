@@ -13,7 +13,7 @@ from numpy import isnan
 
 #------------------------------------------------------------
 # Load Data
-star = pyfits.open('kepler_data/4660971/SOMETHING.fits') # example .fits file
+star = pyfits.open('tau_ceti_like/noisy/11924268.txt') 
 tbdata = star[1].data
 
 # generates 10000 ang. frequencies between 16240 and 16340
