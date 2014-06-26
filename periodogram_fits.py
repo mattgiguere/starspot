@@ -21,7 +21,7 @@ nout = 1000.0
 f = np.linspace(0.2, 10.0, nout)
 
 t = tbdata.field(0) 
-y = tbdata.field(7) # corrected flux
+y = tbdata.field(7) # corrected PDCSAP_flux
 
 print "type 'periodogram(t, y, f)'"
 
@@ -35,7 +35,7 @@ def periodogram(time, flux, f):
 	keep = ~np.isnan(newy)
 	newy = newy[keep]
 	newt = newt[keep]
-	newy -= np.mean(newy)
+	newy -= np.median(newy)
 
     # computed periodogram is unnormalized
 	# takes the value (A**2) * N/4
