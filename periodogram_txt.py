@@ -1,6 +1,6 @@
 # Written by Aida Behmard, 6/23/2014
 # Outputs periodogram given time series Kepler transit data
-# G8 dwarfs: 5200 < T < 5300, log(g) > 4.4, Kep_mag < 10
+# G8 dwarfs: 5200 < T < 5300, log(g) > 4.4, Kep_mag < 11.5
 
 import numpy as np
 import math
@@ -11,7 +11,7 @@ from scipy.signal import lombscargle
 
 #------------------------------------------------------------
 # Load Data
-star = np.loadtxt('tau_ceti_like/noisy/11924268.txt')
+star = np.loadtxt('tau_ceti_like/flat/9764820.txt')
 
 # generates 10000 ang. frequencies between 16240 and 16340
 nout = 1000.0

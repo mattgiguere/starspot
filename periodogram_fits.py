@@ -1,6 +1,6 @@
 # Written by Aida Behmard, 6/10/2014
 # Outputs periodogram given time series Kepler transit data
-# G8 dwarfs: 5200 < T < 5300, log(g) > 4.4, Kep_mag < 10
+# G8 dwarfs: 5200 < T < 5300, log(g) > 4.4, Kep_mag < 11.5
 
 import numpy as np
 import math
