@@ -78,4 +78,4 @@ class FluidSphere:
         mat = geometry.rotation_matrix(-2.0 * math.pi * phase, self.axis)
         p = np.dot(p, mat.transpose())
 
-        return (p, geometry.cap_half_angle(fracarea))
+        return (p, fracarea)
