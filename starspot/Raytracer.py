@@ -5,6 +5,7 @@ import math
 from itertools import izip
 
 import physics
+import geometry
 
 class Raytracer:
     # A raytracer simulation instance, keeping precomputed information.
@@ -42,7 +43,12 @@ class Raytracer:
     def trace(self, t):
         # Computes attenuations at all points at time t.
         mask = np.copy( self.base_mask )
-        for pos,theta in self.spots:
+        for pos,fracarea in self.spots:
+            if hasattr(fracarea, '__call__'): # is fracarea a lambda?
+                theta = geometry.cap_half_angle( fracarea(t) )
+            else: # or a constant
+                theta = geometry.cap_half_angle( fracarea )
+
             pos_t = self.target.evolve(pos, -t)
             mask[ self.target.occlude(pos_t, theta, self.points) ] = 0
         return mask

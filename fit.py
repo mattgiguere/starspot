@@ -1,4 +1,5 @@
 # fit.py: RV curve fitting.
+# pulls from FastOccluder.py
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,14 +7,13 @@ from scipy.optimize import leastsq
 from scipy.stats import linregress
 from starspot import *
 
-data = np.load('tau_ceti/cutdata.npy')
+data = np.load('tau_ceti/npy/cutdata.npy')
 
 T = data[:,0] * 86400.
 RV = data[:,3]
 
 m, b, _, _, _ = linregress(T, RV)
 RV -= m*T + b
-
 
 def rv(p):
     inc, lat, phase, size = p
@@ -27,7 +27,7 @@ def guess_fit():
     n = 0
     best_params = None
     best_err = None
-    for inc in np.linspace(0, 90, res):
+    for inc in np.linspace(35, 35, res):
         for lat in np.linspace(-inc, 90, res):
             for phase in np.linspace(0, 1, res):
                 for size in np.linspace(0, 0.01, res):
@@ -54,3 +54,10 @@ plt.scatter(T, RV + m*T + b)
 plt.plot(T, rv(bp) + m*T + b, label='guess')
 plt.legend()
 plt.show()
+
+# Save the data to a CSV file
+fit_rv = rv(bp) + m*T + b
+true_rv = RV + m*T + b 
+
+np.savetxt('rv_fit.txt', np.c_[T,fit_rv,true_rv])
+print "File saved with filename: rv_fit.txt"

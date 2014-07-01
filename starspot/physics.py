@@ -22,4 +22,11 @@ def voigt(x,amp,pos,fwhm,shape):
         np.sqrt(np.log(2.0))*shape).real
     return tmp
 
+# given equatorial rate, polar rate, and latitude, return
+# angular velocity (rad/s)
+def fluid_rotation(eq_angvel, polar_angvel, latitude):
+    diff_angvel = eq_angvel - polar_angvel
+    rot_angvel = polar_angvel + diff_angvel * np.sin(latitude)**2
+    return rot_angvel
+
 default_limb_darkening = eddington_limb_darkening

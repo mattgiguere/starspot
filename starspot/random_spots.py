@@ -1,6 +1,9 @@
+## PROBABLY USELESS if considering maximum entropy model ##
+
 # Written by Aida Behmard, 5/22/2014
 # Program that adds random coverage by starspots (1.5-141 MSH)
 # Refer to Jeffers et al. (2014)
+
 
 import numpy as np
 import math
@@ -24,7 +27,11 @@ class RandomSpots:
 		number = stats.lognorm.pdf(A, shape, loc = 0, scale = scale) 
 		plt.plot(A, number)
 		areas = np.random.lognormal(mu, s, N)
-		print "areas:", areas
+		print "areas:", areas # MSH
+
+		# make in terms of fracarea
+		fracearas = areas/(6.1*10**12)
+		print "Fractional Spot Areas", fracareas 
 
 	def position(N):
 	    # Random longitude values
@@ -36,9 +43,7 @@ class RandomSpots:
 	    lat = math.asin(2*x+1)
 	    print "latitude:", lat
 
-	def match():
-		# ask Tyler how to randomly assign elements in a list to elements in another list
-
+	
 	
 	    
 
