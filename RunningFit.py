@@ -20,8 +20,6 @@ def running_average(interval, window_size):
 	window = np.ones(int(window_size))/float(window_size)
 	return np.convolve(interval, window, 'same')
 
-y_av = pd.timeseries.resample('3D', how = 'mean')
-
 plot(t, y, "k.")
 y_av = running_average(y, 20)
 plot(t, y_av, 'o', color = 'r')
