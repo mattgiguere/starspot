@@ -11,7 +11,7 @@ from scipy.signal import lombscargle
 
 #------------------------------------------------------------
 # Load Data
-star = np.loadtxt('tau_ceti_like/flat/9764820.txt')
+star = np.loadtxt('tau_ceti_like/noisy/10206340.txt')
 
 # generates 10000 ang. frequencies between 16240 and 16340
 nout = 1000.0
@@ -24,7 +24,6 @@ y_raw = star[:,2] # corrected PDCSAP_flux
 keep = ~np.isnan(y_raw)
 y = y_raw[keep]
 t = t_raw[keep]
-y -= np.median(y)
 
 print "type 'periodogram(t, y, f)'"
 

@@ -1,5 +1,6 @@
 # Written by Aida Behmard, 6/6/2014
 # Running average smoothes RV data 
+# Computes running average according to number of points
 
 from __future__ import division
 from pylab import *
@@ -8,21 +9,23 @@ from numpy import *
 import numpy as np
 from scipy import signal
 
-data = np.load('cutdata.npy') # example
+data = np.loadtxt('tau_ceti_like/noisy/4660971.txt') # example
+
+t = data[:,1]
+y = data[:,2]
 
 def running_average(interval, window_size):
 	# window_size: number of samples to consider
 	# window is centered on each sample
-	window = np.ones(int(window_size))/float(window_size) 
+	window = np.ones(int(window_size))/float(window_size)
 	return np.convolve(interval, window, 'same')
 
-t = data[:,0]
-y = data[:,1]
+y_av = pd.timeseries.resample('3D', how = 'mean')
 
 plot(t, y, "k.")
 y_av = running_average(y, 20)
 plot(t, y_av, 'o', color = 'r')
-xlim(16241.718, 16336.539)
+xlim(1500,1600)
 xlabel("Julian Days")
 ylabel("RV (m/s)")
 title("Tau Ceti: Running Average")

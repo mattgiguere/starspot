@@ -52,6 +52,12 @@ print "bottom cut-off:", bottom
 # 9996021
 # 10186796
 
+# show Debra spot coverage
+spot = np.loadtxt('spot_coverage.txt')
+t = range(22)
+y = spot[:,1]
+plt.plot(t,y,'o',label='Spot Coverage')
+plt.legend(loc='upper left', numpoints = 1)
 
 
 
