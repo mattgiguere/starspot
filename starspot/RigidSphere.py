@@ -18,18 +18,19 @@ class RigidSphere:
         self.const_angvel = self.scalar_angvel * self.axis
 
     def angvel(self, points):
-        # Takes points to angular velocities. Trivial constant function in this case.
-        return np.tile( self.const_angvel, (points.shape[0], 1) )
+        # Takes points to angular velocities. Trivial constant function
+        # in this case.
+        return np.tile(self.const_angvel, (points.shape[0], 1))
 
     def max_radvel(self):
         # Magnitude of RV at star's edge (accounting for inclination).
-        sini = math.sqrt( 1 - self.axis[2]**2 )
+        sini = math.sqrt(1 - self.axis[2]**2)
         return self.scalar_angvel * self.radius * sini
 
     def evolve(self, points, t):
         # Given points at time 0, return points at time t.
         mat = geometry.rotation_matrix(-self.scalar_angvel * t, self.axis)
-        return np.dot( points, mat.transpose() )
+        return np.dot(points, mat.transpose())
 
     def occlude(self, pos, theta, points):
         # Return a boolean mask of occluded points.
