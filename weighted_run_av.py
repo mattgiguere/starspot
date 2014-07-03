@@ -28,7 +28,7 @@ plt.title("Exponentially Weighted Running Average")
 
 plt.show()
 
-# Save the data to a CSV file
+# Save the data to a .txt file
 np.savetxt('running_average.txt', np.c_[t, y_av, y])
 print "File saved with filename: running_average.txt"
 
