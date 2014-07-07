@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt
 
 from numpy import hstack
 
-data = np.loadtxt('running_average.txt')
+star = np.loadtxt('running_average.txt')
 
-t = data[:,0]
-y_av = data[:,1]
-y = data[:,2]
+t = star[:,0]
+y_av = star[:,1]
+y = star[:,2]
 
 print "type: 'cut_outliers(t, y, y_av)'"
 
@@ -46,7 +46,19 @@ def cut_outliers(t, y, y_av):
 	t = np.hstack((t_1, t_2, t_3, t_4, t_5, t_6))
 	diff = np.hstack((diff_1, diff_2, diff_3, diff_4, diff_5, diff_6))
 
-	plt.plot(t, diff, 'o')
+	print "quantity:", len(diff) # check that correct values are considered
+	top = np.percentile(diff, 99.7) # 3-sigma cut-off
+	print "cut-off:", top
+
+	cut = np.where(diff > 145.084166338)
+	outliers = diff[cut]
+	print "number of outliers:", len(outliers)
+
+	plt.plot(t, diff, '.')
+	plt.plot(t[cut], outliers, 'ro')
+	plt.xlabel("Julian Days")
+	plt.ylabel("Flux Difference")
+	plt.title("Outliers")
 	plt.show()
 
 	# Save the data to a .txt file

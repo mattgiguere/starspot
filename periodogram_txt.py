@@ -8,44 +8,90 @@ import pyfits
 import matplotlib.pyplot as plt
 
 from scipy.signal import lombscargle
+from numpy import hstack
 
-#------------------------------------------------------------
 # Load Data
-star = np.loadtxt('tau_ceti_like/noisy/10206340.txt')
+star = np.loadtxt('running_average.txt') # from ewra.py
 
-# generates 10000 ang. frequencies between 16240 and 16340
+t_raw = star[:,0]
+y_av = star[:,1]
+y_raw = star[:,2] # corrected PDCSAP_FLUX (detrended, added back median)
+
+
+# ---------- Exclude Outliers -------------------
+
+# if fit is above raw value
+good_1 = np.where((y_av > y_raw) & (y_av > 0) & (y_raw > 0))
+diff_1 = y_av[good_1] - y_raw[good_1] 
+t_1 = t_raw[good_1]
+
+good_2 = np.where((y_av > y_raw) & (y_av > 0) & (y_raw < 0))
+diff_2 = y_av[good_2] - y_raw[good_2]
+t_2 = t_raw[good_2]
+
+good_3 = np.where((y_av > y_raw) & (y_av < 0) & (y_raw < 0))
+diff_3 = -(y_raw[good_3]) + y_av[good_3]
+t_3 = t_raw[good_3]
+
+# if fit is below raw value
+good_4 = np.where((y_raw > y_av) & (y_av > 0) & (y_raw > 0))
+diff_4 = y_raw[good_4] - y_av[good_4]
+t_4 = t_raw[good_4]
+
+good_5 = np.where((y_raw > y_av) & (y_raw > 0) & (y_av < 0))
+diff_5 = y_raw[good_5] - y_av[good_5]
+t_5 = t_raw[good_5]
+
+good_6 = np.where((y_raw > y_av) & (y_raw < 0) & (y_av < 0))
+diff_6 = -(y_av[good_6]) + y_raw[good_6]
+t_6 = t_raw[good_6]
+
+t = np.hstack((t_1, t_2, t_3, t_4, t_5, t_6))
+diff = np.hstack((diff_1, diff_2, diff_3, diff_4, diff_5, diff_6))
+
+print "total quantity:", len(diff) # check that correct values are considered
+top = np.percentile(diff, 99.7) # 3-sigma cut-off
+print "outlier cut-off:", top
+
+out = np.where(diff > 145.084166338) # outlier condition
+y_not = y_raw[out]
+t_not = t_raw[out]
+y_main = list(set(y_raw) - set(y_raw[out])) # subtract outliers
+t_main = list(set(t_raw) - set(t_raw[out]))
+
+y_keep = np.asarray(y_main) # convert list to array
+t_keep = np.asarray(t_main)
+
+# ------------ Generate Periodogram -----------------------
+
+# generates 10000 ang. frequencies 
 nout = 1000.0
 f = np.linspace(0.03, 10.0, nout)
 
-t_raw = star[:,1] 
-y_raw = star[:,2] # corrected PDCSAP_flux
-
-# exclude NaNs in data
-keep = ~np.isnan(y_raw)
-y = y_raw[keep]
-t = t_raw[keep]
+# exclude NaNs 
+keep = ~np.isnan(y_keep)
+y = y_keep[keep]
+t = t_keep[keep]
 
 print "type 'periodogram(t, y, f)'"
 
 def periodogram(time, flux, f):
 
     # computed periodogram is unnormalized
-	# takes the value (A**2) * N/4
-	# for a harmonic signal with amplitude A for sufficiently large N
+    # takes the value (A**2) * N/4
+    # for a harmonic signal with amplitude A for sufficiently large N
 
     pgram = lombscargle(time, flux, f)
 
     plt.subplot(2, 1, 1)
     plt.plot(time, flux, '.', label = 'Time Series')
-    plt.legend(loc='upper right', numpoints = 1)
+    plt.legend(loc='lower right', numpoints = 1)
     plt.xlabel('Time (MJD)')
     plt.ylabel('Flux')
 
     normval = t.shape[0]
 
     plt.subplot(2, 1, 2)
-
-    print f, pgram
     period = 2*math.pi / f
 
     # plot normalized periodogram
@@ -58,5 +104,3 @@ def periodogram(time, flux, f):
 
     big_period = period[np.argmax(pgram)]
     print "dominant period =", big_period
-
-   
