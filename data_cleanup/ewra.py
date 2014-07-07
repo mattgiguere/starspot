@@ -8,19 +8,19 @@ import numpy as np
 from scipy import signal
 import pandas as pd
 
-data = np.loadtxt('raw_10186796.txt') 
+data = np.loadtxt('tau_ceti_like/flat/10186796.txt') 
 
 t = data[:,1]
 y_raw = data[:,2]
 
 # detrend
-y = signal.detrend(y_raw)
-
+# works if quarter offsets are corrected 
+y = signal.detrend(y_raw) + 853281.125 # added median flux 
 plt.plot(t, y, 'ro')
 
 y_av = pd.stats.moments.ewma(y, span = 20)
 
-#plt.plot(t, y_av)
+plt.plot(t, y_av)
 plt.xlim(0, 1600)
 plt.xlabel("Julian Days")
 plt.ylabel("Flux")
@@ -31,4 +31,3 @@ plt.show()
 # Save the data to a .txt file
 np.savetxt('running_average.txt', np.c_[t, y_av, y])
 print "File saved with filename: running_average.txt"
-
