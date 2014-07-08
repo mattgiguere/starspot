@@ -53,7 +53,15 @@ print "total quantity:", len(diff) # check that correct values are considered
 top = np.percentile(diff, 99.7) # 3-sigma cut-off
 print "outlier cut-off:", top
 
-out = np.where(diff > 145.084166338) # outlier condition
+plt.plot(t, diff)
+plt.title('Outliers')
+plt.xlabel('Julian Days')
+plt.ylabel('Flux Difference')
+
+out = np.where(diff > top) # outlier condition
+plt.plot(t[out], diff[out], 'ro')
+plt.show()
+
 y_not = y_raw[out]
 t_not = t_raw[out]
 y_main = list(set(y_raw) - set(y_raw[out])) # subtract outliers
@@ -66,20 +74,23 @@ t_keep = np.asarray(t_main)
 
 # generates 10000 ang. frequencies 
 nout = 1000.0
-f = np.linspace(0.03, 10.0, nout)
+f = np.linspace(0.05, 10.0, nout)
 
 # exclude NaNs 
 keep = ~np.isnan(y_keep)
 y = y_keep[keep]
 t = t_keep[keep]
 
-print "type 'periodogram(t, y, f)'"
+print "'periodogram(t, y, f)' for no outliers, 'periodogram(t_raw, y_raw, f)' for raw data"
 
-def periodogram(time, flux, f):
+def periodogram(time, y_values, f):
 
     # computed periodogram is unnormalized
     # takes the value (A**2) * N/4
     # for a harmonic signal with amplitude A for sufficiently large N
+
+    # lombscargle can only be used if mean flux is 0 and variance is 1
+    flux = (y-y.mean())/y.std()
 
     pgram = lombscargle(time, flux, f)
 
@@ -93,14 +104,18 @@ def periodogram(time, flux, f):
 
     plt.subplot(2, 1, 2)
     period = 2*math.pi / f
+    power = np.sqrt(4*pgram/normval)
 
     # plot normalized periodogram
-    plt.plot(period, np.sqrt(4*pgram/normval), label = 'Periodogram')
-    plt.legend(loc='upper right', numpoints = 1)
+
+    plt.plot(period, power, label = 'Periodogram')
+    plt.legend(loc='lower right', numpoints = 1)
     plt.xlabel('Period (MJD)')
     plt.ylabel('Power')
 
     plt.show()
 
-    big_period = period[np.argmax(pgram)]
+    big_period = period[np.argmax(pgram)] # dominant period
+    big_power = power[np.argmax(pgram)] # dominant power
     print "dominant period =", big_period
+    print "domninant power =", big_power
