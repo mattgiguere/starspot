@@ -53,7 +53,7 @@ print "total quantity:", len(diff) # check that correct values are considered
 top = np.percentile(diff, 99.7) # 3-sigma cut-off
 print "outlier cut-off:", top
 
-plt.plot(t, diff)
+plt.plot(t, diff, '.')
 plt.title('Outliers')
 plt.xlabel('Julian Days')
 plt.ylabel('Flux Difference')
@@ -74,7 +74,7 @@ t_keep = np.asarray(t_main)
 
 # generates 10000 ang. frequencies 
 nout = 1000.0
-f = np.linspace(0.05, 10.0, nout)
+f = np.linspace(0.001, 100.0, nout)
 
 # exclude NaNs 
 keep = ~np.isnan(y_keep)
@@ -95,27 +95,24 @@ def periodogram(time, y_values, f):
     pgram = lombscargle(time, flux, f)
 
     plt.subplot(2, 1, 1)
-    plt.plot(time, flux, '.', label = 'Time Series')
-    plt.legend(loc='lower right', numpoints = 1)
+    plt.plot(time, flux, '.')
     plt.xlabel('Time (MJD)')
     plt.ylabel('Flux')
 
     normval = t.shape[0]
 
     plt.subplot(2, 1, 2)
-    period = 2*math.pi / f
     power = np.sqrt(4*pgram/normval)
 
     # plot normalized periodogram
 
-    plt.plot(period, power, label = 'Periodogram')
-    plt.legend(loc='lower right', numpoints = 1)
-    plt.xlabel('Period (MJD)')
+    plt.plot(f, power)
+    plt.xlabel('Frequency (MJD)')
     plt.ylabel('Power')
 
     plt.show()
 
-    big_period = period[np.argmax(pgram)] # dominant period
+    big_frequency = f[np.argmax(pgram)] # dominant frequency
     big_power = power[np.argmax(pgram)] # dominant power
-    print "dominant period =", big_period
+    print "dominant frequency =", big_frequency
     print "domninant power =", big_power

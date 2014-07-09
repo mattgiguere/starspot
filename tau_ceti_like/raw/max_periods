@@ -1,0 +1,18 @@
+# Outlier Subtraction Notes
+# Applied to Kepler data of G8 dwarfs:
+# 5200 < T < 5300, log(g) > 4.4, Kep_mag < 11.5
+
+1. 4660971:
+
+dominant frequency = 70.2705675676
+dominant power = 0.0253765034657
+
+2. 5042255:
+
+dominant frequency = 90.5906846847
+dominant power = 0.0212521047209
+
+3. 5449910:
+
+dominant frequency = 10.8117027027
+dominant power = 0.0258799996145

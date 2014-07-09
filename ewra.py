@@ -8,7 +8,7 @@ import numpy as np
 from scipy import signal
 import pandas as pd
 
-data = np.loadtxt('tau_ceti_like/noisy/4831454.txt') 
+data = np.loadtxt('tau_ceti_like/noisy/5449910.txt') 
 
 t = data[:,1]
 y_raw = data[:,2]
