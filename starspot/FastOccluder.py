@@ -1,5 +1,4 @@
 # FastOccluder.py: fast algorithm for computing RV distribution
-# Edited by Aida (6/3): theta(t) in ln. 25 has problems (trying to import SpotDecay.py)
 
 import math
 from itertools import izip

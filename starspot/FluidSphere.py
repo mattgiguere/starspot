@@ -8,7 +8,6 @@
 # - AB Doradus => K dwarf
 # - eq_rate = 12.2434 rad/d; diff_rate = 0.0564 rad/d
 
-# ASSUMING that period(theta) has problems 
 
 import numpy as np
 import math
