@@ -62,35 +62,29 @@ out = np.where(diff > top) # outlier condition
 plt.plot(t[out], diff[out], 'ro')
 plt.show()
 
-y_not = y_raw[out]
-t_not = t_raw[out]
-y_main = list(set(y_raw) - set(y_raw[out])) # subtract outliers
-t_main = list(set(t_raw) - set(t_raw[out]))
+# exclude NaNs 
+keep = ~np.isnan(y_raw)
+y_int = y_raw[keep]
+t_int = t_raw[keep]
 
-y_keep = np.asarray(y_main) # convert list to array
-t_keep = np.asarray(t_main)
+good = np.where(diff < top) 
+y = y_int[good]
+t = t_int[good]
+
 
 # ------------ Generate Periodogram -----------------------
 
 # generates 10000 ang. frequencies 
 nout = 1000.0
-f = np.linspace(0.001, 100.0, nout)
-
-# exclude NaNs 
-keep = ~np.isnan(y_keep)
-y = y_keep[keep]
-t = t_keep[keep]
+f = np.linspace(0.001, 10.0, nout)
 
 print "'periodogram(t, y, f)' for no outliers, 'periodogram(t_raw, y_raw, f)' for raw data"
 
-def periodogram(time, y_values, f):
+def periodogram(time, flux, f):
 
     # computed periodogram is unnormalized
     # takes the value (A**2) * N/4
     # for a harmonic signal with amplitude A for sufficiently large N
-
-    # lombscargle can only be used if mean flux is 0 and variance is 1
-    flux = (y-y.mean())/y.std()
 
     pgram = lombscargle(time, flux, f)
 
@@ -102,7 +96,7 @@ def periodogram(time, y_values, f):
     normval = t.shape[0]
 
     plt.subplot(2, 1, 2)
-    power = np.sqrt(4*pgram/normval)
+    power = np.sqrt(4*(pgram/normval))
 
     # plot normalized periodogram
 

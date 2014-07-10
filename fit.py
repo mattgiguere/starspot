@@ -28,11 +28,11 @@ def guess_fit():
     best_params = None
     best_err = None
     for inc in np.linspace(35, 35, res):
-        for lat in np.linspace(-inc, 90, res):
-            for phase in np.linspace(0, 1, res):
+        for lat in np.linspace(55, 55, res):
+            for phase in np.linspace(0, 0, res):
                 for size in np.linspace(0, 0.01, res):
-                    for lat2 in np.linspace(-inc, 90, res):
-                        for phase2 in np.linspace(0, 1, res):
+                    for lat2 in np.linspace(55, 55, res):
+                        for phase2 in np.linspace(2/3, 2/3, res):
                             for size2 in np.linspace(0, 0.01, res):
                                 n += 1
                                 print "try %d/%d" % (n, res**4)
