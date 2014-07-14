@@ -71,6 +71,10 @@ good = np.where(diff < top)
 y = y_int[good]
 t = t_int[good]
 
+# Save the data to a .txt file
+np.savetxt('out_cut.txt', np.c_[t, y])
+print "File saved with filename: out_cut.txt"
+
 
 # ------------ Generate Periodogram -----------------------
 
@@ -101,12 +105,12 @@ def periodogram(time, flux, f):
     # plot normalized periodogram
 
     plt.plot(f, power)
-    plt.xlabel('Frequency (MJD)')
+    plt.xlabel('Ang. Frequency (MJD)')
     plt.ylabel('Power')
 
     plt.show()
 
     big_frequency = f[np.argmax(pgram)] # dominant frequency
     big_power = power[np.argmax(pgram)] # dominant power
-    print "dominant frequency =", big_frequency
+    print "dominant ang. frequency =", big_frequency
     print "domninant power =", big_power

@@ -1,48 +1,48 @@
 # Outlier Subtraction Notes
 # Applied to Kepler data of G8 dwarfs:
-# 5200 < T < 5300, log(g) > 4.4, Kep_mag < 11.5
+# 5200 < T < 5300, log(g) > 4.4, kep_mag < 11.5
 
 Noisy:
 
 5449910:
 dominant frequency = 0.441396396396
-domninant power = 941.902008371
+dominant power = 941.902008371
 
 4660971:
 dominant frequency = 0.661594594595
-domninant power = 2153.03513597
+dominant power = 2153.03513597
 
 4732422:
 dominant frequency = 0.411369369369
-domninant power = 725.419250916
+dominant power = 725.419250916
 
 4831454:
 dominant frequency = 1.21209009009
-domninant power = 1608.56600681
+dominant power = 1608.56600681
 
 5042255:
 dominant frequency = 0.771693693694
-domninant power = 699.472690131
+dominant power = 699.472690131
 
 9604728:
 dominant frequency = 0.181162162162
-domninant power = 235.317276776
+dominant power = 235.317276776
 
 9604728:
 dominant frequency = 0.61154954955
-domninant power = 1048.15510942
+dominant power = 1048.15510942
 
 10006542:
 dominant frequency = 0.191171171171
-domninant power = 49.2264614317
+dominant power = 49.2264614317
 
 10206340:
 dominant frequency = 2.75347747748
-domninant power = 85037.0981453
+dominant power = 85037.0981453
 
 11924268:
 dominant frequency = 0.20118018018
-domninant power = 140.593034905
+dominant power = 140.593034905
 
 Flat:
 
@@ -52,45 +52,45 @@ domninant power = 3.33199623757
 
 3956527:
 dominant frequency = 0.171153153153
-domninant power = 3.68397584009
+dominant power = 3.68397584009
 
 4457351:
 dominant frequency = 0.691621621622
-domninant power = 3.79101677184
+dominant power = 3.79101677184
 
 5390769:
 dominant frequency = 0.311279279279
-domninant power = 4.943185963
+dominant power = 4.943185963
 
 5512283:
 dominant frequency = 0.431387387387
-domninant power = 43.8023242403
+dominant power = 43.8023242403
 
 6848299:
 dominant frequency = 0.131117117117
-domninant power = 2.72834892745
+dominant power = 2.72834892745
 
 7970740:
 dominant frequency = 0.341306306306
-domninant power = 357.518609498
+dominant power = 357.518609498
 
 9468214:
 dominant frequency = 0.371333333333
-domninant power = 17.6449636145
+dominant power = 17.6449636145
 
 9760257:
 dominant frequency = 0.251225225225
-domninant power = 6.69652051288
+dominant power = 6.69652051288
 
 9764820:
 dominant frequency = 0.111099099099
-domninant power = 98.1468412086
+dominant power = 98.1468412086
 
 9996021:
 dominant frequency = 0.191171171171
-domninant power = 20.9853419859
+dominant power = 20.9853419859
 
 10186796:
 dominant frequency = 0.40136036036
-domninant power = 22.2149880169
+dominant power = 22.2149880169
 
