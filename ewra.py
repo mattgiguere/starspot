@@ -8,13 +8,15 @@ import numpy as np
 from scipy import signal
 import pandas as pd
 
-data = np.loadtxt('tau_ceti_like/noisy_data/4660971.txt')
+data = np.loadtxt('tau_ceti_like/noisy_data/5042255.txt')
 
 quarter = data[:,0]
 t = data[:,1]
 y_raw = data[:,2]
 
-keep = np.where(quarter == 14)
+end = max(quarter)
+
+keep = np.where(quarter == 8)
 
 quarter = quarter[keep]
 y = y_raw[keep]
