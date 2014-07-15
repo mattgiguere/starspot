@@ -25,8 +25,8 @@ freqs = fftpack.rfftfreq(N, d = (t[1]-t[0])/(2*pi))
 frequency = freqs[idx]
 
 amplitude = flux.max()
-guess = [amplitude, frequency, 0.]
-print "guessed amplitude & frequency:", guess
+guess = [amplitude, 0.76, 0.]
+print "guessed amplitude & ang. frequency:", guess
 (amplitude, frequency, phase), pcov = optimize.curve_fit(
     mysine, t, flux, guess)
 

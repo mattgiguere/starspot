@@ -8,20 +8,27 @@ import numpy as np
 from scipy import signal
 import pandas as pd
 
-data = np.loadtxt('tau_ceti_like/noisy_data/4660971.txt') 
+data = np.loadtxt('tau_ceti_like/noisy_data/4660971.txt')
 
+quarter = data[:,0]
 t = data[:,1]
 y_raw = data[:,2]
 
+keep = np.where(quarter == 14)
+
+quarter = quarter[keep]
+y = y_raw[keep]
+t = t[keep]
+
 # detrend
 # works if quarter offsets are corrected 
-y = signal.detrend(y_raw) 
-plt.plot(t, y, 'ro')
+flux = signal.detrend(y) 
+plt.plot(t, flux, 'ro')
 
-y_av = pd.stats.moments.ewma(y, span = 5) # smaller span, sharper decay
+flux_av = pd.stats.moments.ewma(flux, span = 5) # smaller span, sharper decay
 
-plt.plot(t, y_av)
-plt.xlim(850, 1600)
+plt.plot(t, flux_av)
+plt.xlim(0, 1600)
 plt.xlabel("Julian Days")
 plt.ylabel("Flux")
 plt.title("Exponentially Weighted Running Average")
@@ -29,5 +36,5 @@ plt.title("Exponentially Weighted Running Average")
 plt.show()
 
 # Save the data to a .txt file
-np.savetxt('running_average.txt', np.c_[t, y_av, y])
-print "File saved with filename: running_average.txt"
+np.savetxt('running_av.txt', np.c_[quarter, t, flux_av, flux])
+print "File saved with filename: running_av.txt"

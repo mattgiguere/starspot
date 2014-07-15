@@ -9,13 +9,15 @@ import matplotlib.pyplot as plt
 
 from scipy.signal import lombscargle
 from numpy import hstack
+import heapq
 
 # Load Data
-star = np.loadtxt('running_average.txt') # from ewra.py
+star = np.loadtxt('running_av.txt') # from ewra.py
 
-t_raw = star[:,0]
-y_av = star[:,1]
-y_raw = star[:,2] # corrected PDCSAP_FLUX (detrended, added back median)
+quarter_raw = star[:,0]
+t_raw = star[:,1]
+y_av = star[:,2]
+y_raw = star[:,3] # corrected PDCSAP_FLUX (detrended, added back median)
 
 
 # ---------- Exclude Outliers -------------------
@@ -78,9 +80,9 @@ print "File saved with filename: out_cut.txt"
 
 # ------------ Generate Periodogram -----------------------
 
-# generates 10000 ang. frequencies 
+# generates 1000 ang. frequencies 
 nout = 1000.0
-f = np.linspace(0.001, 10.0, nout)
+f = np.linspace(0.0001, 20.0, nout)
 
 print "'periodogram(t, y, f)' for no outliers, 'periodogram(t_raw, y_raw, f)' for raw data"
 
@@ -110,7 +112,11 @@ def periodogram(time, flux, f):
 
     plt.show()
 
-    big_frequency = f[np.argmax(pgram)] # dominant frequency
+    big_frequency = f[np.argmax(pgram)] # dominant ang. frequency
     big_power = power[np.argmax(pgram)] # dominant power
     print "dominant ang. frequency =", big_frequency
     print "domninant power =", big_power
+
+    # Save the data to a .txt file
+    np.savetxt('quarter_14.txt', np.c_[f, power])
+    print "File saved with filename: quarter_14.txt"
