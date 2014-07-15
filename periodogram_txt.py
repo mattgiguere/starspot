@@ -117,6 +117,4 @@ def periodogram(time, flux, f):
     print "dominant ang. frequency =", big_frequency
     print "domninant power =", big_power
 
-    # Save the data to a .txt file
-    np.savetxt('quarter_14.txt', np.c_[f, power])
-    print "File saved with filename: quarter_14.txt"
+
