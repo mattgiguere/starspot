@@ -32,3 +32,7 @@ def frac_cap_area(theta):
 # cap area / sphere area -> half angle (inverse of frac_cap_area)
 def cap_half_angle(fracarea):
     return math.acos(1. - 2.*fracarea)
+
+# given array of normalized (x,y,z) points and axis, convert to 1D array of latitudes
+def points_to_latitudes(points, axis):
+    return np.arccos( np.dot(points, axis) )
