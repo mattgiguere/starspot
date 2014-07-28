@@ -16,9 +16,9 @@ m, b, _, _, _ = linregress(T, RV)
 RV -= m*T + b
 
 def rv(p):
-    inc, lat, phase, size, lat2, phase2, size2 = p
+    inc, lat, phase, size  = p
     star = RigidSphere(0.793 * 6.955e8, 34. * 86400., [0, math.cos(inc), math.sin(inc)])
-    occ = FastOccluder(star, [star.spot(lat, phase, size), star.spot(lat2, phase2, size2)]) # add for multiple spots
+    occ = FastOccluder(star, [star.spot(lat, phase, size)]) # add for multiple spots
     return get_rvs(occ, T)
 
 # coarse search over parameter space to find a guess
@@ -27,21 +27,18 @@ def guess_fit():
     n = 0
     best_params = None
     best_err = None
-    for inc in np.linspace(35, 35, res):
-        for lat in np.linspace(55, 55, res):
-            for phase in np.linspace(0, 0, res):
-                for size in np.linspace(0, 0.01, res):
-                    for lat2 in np.linspace(55, 55, res):
-                        for phase2 in np.linspace(2/3, 2/3, res):
-                            for size2 in np.linspace(0, 0.01, res):
-                                n += 1
-                                print "try %d/%d" % (n, res**4)
-                                p = [inc, lat, phase, size, lat2, phase2, size2]
-                                r = rv(p)
-                                e = np.linalg.norm( r - RV )
-                                if best_err == None or e < best_err:
-                                    best_params = p
-                                    best_err = e
+    for inc in np.linspace(0, 90, res):
+        for lat in np.linspace(-inc, 90, res):
+            for phase in np.linspace(0, 1, res):
+                for size in np.linspace(0, 0.1, res):
+                    n += 1
+                    print "try %d/%d" % (n, res**4)
+                    p = [inc, lat, phase, size]
+                    r = rv(p)
+                    e = np.linalg.norm( r - RV )
+                    if best_err == None or e < best_err:
+                        best_params = p
+                        best_err = e
     return best_params
 
 # use nonlinear optimization to refine fit

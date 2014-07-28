@@ -8,7 +8,7 @@ import numpy as np
 from scipy import signal
 import pandas as pd
 
-data = np.loadtxt('tau_ceti_like/noisy/5449910.txt') 
+data = np.loadtxt('tau_ceti_like/flat/4660971.txt') 
 
 t = data[:,1]
 y_raw = data[:,2]
@@ -18,10 +18,10 @@ y_raw = data[:,2]
 y = signal.detrend(y_raw) 
 plt.plot(t, y, 'ro')
 
-y_av = pd.stats.moments.ewma(y, span = 20) # smaller span, sharper decay
+y_av = pd.stats.moments.ewma(y, span = 5) # smaller span, sharper decay
 
 plt.plot(t, y_av)
-plt.xlim(0, 1600)
+plt.xlim(850, 1600)
 plt.xlabel("Julian Days")
 plt.ylabel("Flux")
 plt.title("Exponentially Weighted Running Average")
